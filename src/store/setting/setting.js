@@ -1,0 +1,38 @@
+export const IMATE_API = {
+  baseUrl: `http://irfan093-001-site1.itempurl.com/`,
+  auth: {
+    login: 'api/User/IsPhoneExist?UserPhone=',
+    signUp: 'api/User/SignUp',
+  },
+  user: {
+    get_user_info:'api/User/GetUser?UserEmail=',
+    is_email:'api/User/IsEmailExist?UserEmail=',
+    add_photos: 'api/User/AddUserPhotos',
+    get_photos:'api/User/GetUserPhotos?UserEmail=',
+    delete_photo:'api/User/DeleteUserPhoto?UserEmail=',
+    get_all_users:'api/User/FilterUsers?UserEmail=',
+    get_filter:'api/User/GetUserFilter?UserEmail=',
+    update_filter:'api/User/UpdateUserFilter',
+    update_Phone:'api/User/UpdateUserPhone?UserEmail=',
+    like:'api/User/LikeUser?UserEmail=',
+    super_like:'api/User/SuperLikeUser?UserEmail=',
+    super_dislike:'api/User/SuperDisLikeUser?UserEmail=',
+    unlike:'api/User/DisLikeUser?UserEmail=',
+    like_me_topic:'api/User/UserLikeMeAndTopPicks?UserEmail=',
+    update_pic:'api/User/UpdateUserProfile',
+    get_otp:'api/User/SendOTP?UserPhone=',
+    edit_profile:'api/User/EditProfile',
+    update_name:'api/User/UpdateUserName?UserEmail=',
+    update_setting:'api/User/UpdateUserSetting',
+    get_notification:'api/User/GetUserNotifications?UserEmail=',
+    rewind:'api/User/Rewind?UserEmail=',
+    block:'api/User/BlockUser?UserEmail=',
+    update_active_status:'api/User/ActiveStatus?UserEmail=',
+    update_deactive_status:'api/User/DeActiveStatus?UserEmail=',
+  },
+  chat:{
+    get_chat_list:'api/Chat/GetChatList?UserEmail=',
+    get_messages:'api/Chat/GetMessageList?UserEmail=',
+    post_message:'api/Chat/SendMessage',
+  }
+}

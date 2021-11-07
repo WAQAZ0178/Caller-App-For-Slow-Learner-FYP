@@ -12,6 +12,8 @@ target 'Call_App_Slow_Learner_FYP' do
     :hermes_enabled => false
   )
 
+  pod 'TextToSpeech', :path => '../node_modules/react-native-tts'
+
   target 'Call_App_Slow_Learner_FYPTests' do
     inherit! :complete
     # Pods for testing

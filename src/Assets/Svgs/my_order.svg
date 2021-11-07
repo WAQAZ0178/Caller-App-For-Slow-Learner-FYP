@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+    <defs>
+        <filter id="Ellipse_508" width="50" height="50" x="0" y="0" filterUnits="userSpaceOnUse">
+            <feOffset dy="3"/>
+            <feGaussianBlur result="blur" stdDeviation="3"/>
+            <feFlood flood-opacity=".161"/>
+            <feComposite in2="blur" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <style>
+            .cls-2{fill:#555}
+        </style>
+    </defs>
+    <g id="Group_4154" transform="translate(-2264 -3428)">
+        <g filter="url(#Ellipse_508)" transform="translate(2264 3428)">
+            <circle id="Ellipse_508-2" cx="16" cy="16" r="16" fill="#fff" transform="translate(9 6)"/>
+        </g>
+        <g id="shopping-basket" transform="translate(2279 3425.002)">
+            <g id="Group_3969" transform="translate(0 15.998)">
+                <g id="Group_3968">
+                    <path id="Path_2256" d="M19.375 21h-3.364l-2.328-4.655a.625.625 0 0 0-1.119.559L14.614 21H5.386l2.048-4.1a.625.625 0 0 0-1.118-.56L3.989 21H.625a.625.625 0 0 0-.625.623v2.5a.625.625 0 0 0 .625.625h18.75a.625.625 0 0 0 .625-.625v-2.5a.625.625 0 0 0-.625-.623z" class="cls-2" transform="translate(0 -15.998)"/>
+                </g>
+            </g>
+            <g id="Group_3971" transform="translate(1.7 25.998)">
+                <g id="Group_3970">
+                    <path id="Path_2257" d="M43.52 272l2.069 8.276a.625.625 0 0 0 .606.474h11.25a.624.624 0 0 0 .606-.474l2.07-8.276zm5.8 5.625a.625.625 0 0 1-1.25 0v-3.75a.625.625 0 0 1 1.25 0zm3.125 0a.625.625 0 0 1-1.25 0v-3.75a.625.625 0 0 1 1.25 0zm3.125 0a.625.625 0 0 1-1.25 0v-3.75a.625.625 0 0 1 1.25 0z" class="cls-2" transform="translate(-43.52 -272.003)"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
