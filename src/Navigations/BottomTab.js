@@ -3,23 +3,11 @@ import * as React from 'react';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {StyleSheet} from 'react-native';
 import Home from '../../src/pages/Home/Home';
-import Order_History from '../pages/order History/Order_History';
-import Notification from '../pages/Notification/Notification';
 import Cart from '../../src/pages/Cart Page/Cart';
 import HomeIcon from '../../src/Assets/Svgs/Home.svg';
 import CartIcon from '../../src/Assets/Svgs/Home_Cart_Icon.svg';
 import ProfileIcon from '../../src/Assets/Svgs/Profile.svg';
 import MyOrderIcon from '../../src/Assets/Svgs/Home_Order_Icon.svg';
-import Svg, {G, Path} from 'react-native-svg';
-import Added_Screnn from '../pages/Added Screen/Added_screen';
-import Add_Product from '../pages/Seller Add Product/Add_Product';
-import Edit_Prodcut from '../pages/Seller Edit Product/Edit_Product';
-import Subscription_1 from '../pages/Subscription Page_1/Subscription_1';
-import Raffle_Announced from '../pages/RaffleAnnounced/RaffleAnnounced';
-import Product_Details from '../pages/Product_Details_Screen_1/Product_Details_Screen_1';
-import MessagesIcon from '../Assets/Svgs/MessagesIcon.svg';
-import Payment_Option_1 from '../pages/Seller Signup Payment Option_1/Seller_Signup_Payment_Option_1';
-import Checkout from '../pages/CheckOut Page/Checkout';
 import {hp, wp} from '../Global/Styles/Scalling';
 import Zocial from 'react-native-vector-icons/Zocial';
 import Material from 'react-native-vector-icons/MaterialIcons';
@@ -27,7 +15,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {theme, theme2, white} from '../Global/Styles/Theme';
-import Profile from '../pages/Profile/Profile';
+
 const Tab = createMaterialBottomTabNavigator();
 
 const TabNavigator = () => {

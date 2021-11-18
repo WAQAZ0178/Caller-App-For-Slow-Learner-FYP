@@ -7,12 +7,11 @@ const CustomizeButton = ({
   title = 'kuch bhi',
   color = white,
   labelcolor = black,
+  customstyle,
   onPress,
 }) => {
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={{...styles.container, backgroundColor: color}}>
+    <TouchableOpacity onPress={onPress} style={[styles.container, customstyle]}>
       <Text style={{...styles.btnText, color: labelcolor}}>{title}</Text>
     </TouchableOpacity>
   );

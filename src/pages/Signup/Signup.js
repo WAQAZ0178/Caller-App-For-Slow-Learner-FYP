@@ -6,7 +6,7 @@ import {
   StatusBar,
   ScrollView,
 } from 'react-native';
-import styles from './Login-styles';
+import styles from './Signup-styles';
 import Octicons from 'react-native-vector-icons/Octicons';
 import momemt from 'moment';
 import {wp, hp} from '../../Global/Styles/Scalling';
@@ -15,7 +15,7 @@ import {theme, theme2, white} from '../../Global/Styles/Theme';
 import LoginSVG from '../../Assets/Svgs/themesvg.svg';
 import {TextInput} from 'react-native-paper';
 import CustomiseButton from '../../Components/customizeButton/CustomizedButton';
-const Login = ({navigation}) => {
+const Signup = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
   const [showPassword, setshowPassword] = useState(true);
@@ -79,8 +79,8 @@ const Login = ({navigation}) => {
         <View>
           <TouchableOpacity style={styles.navLink}>
             <Text style={{color: white}}>
-              don't have an account ?{' '}
-              <Text style={{color: '#3A4385'}}> signup</Text>
+              Already have an account ?{' '}
+              <Text style={{color: '#3A4385'}}> Login</Text>
             </Text>
           </TouchableOpacity>
         </View>
@@ -88,4 +88,4 @@ const Login = ({navigation}) => {
     </View>
   );
 };
-export default Login;
+export default Signup;

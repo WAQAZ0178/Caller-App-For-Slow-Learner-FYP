@@ -9,26 +9,14 @@ import {
   whiteGray,
   theme2,
   theme,
-  black,
 } from '../../Global/Styles/Theme';
 
 const styles = StyleSheet.create({
+  mainView: {flex: 1, backgroundColor: theme},
   container: {
-    height: hp(7),
-    borderRadius: 6,
-    width: wp(90),
-    backgroundColor: 'white',
     alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: white,
-    borderWidth: 1,
-    marginHorizontal: wp(9.33),
-  },
-  btnText: {
-    color: black,
-    fontFamily: fontFamily.UbuntuMedium,
-    fontSize: 18,
-    fontWeight: '500',
+    flex: 1,
+    backgroundColor: theme,
   },
 });
 export default styles;
