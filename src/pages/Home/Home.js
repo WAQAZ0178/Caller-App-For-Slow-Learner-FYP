@@ -15,7 +15,7 @@ import styles from './Home_styles';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Tts from 'react-native-tts';
 
-const Home = () => {
+const Home = ({navigation}) => {
   const [input, setinput] = useState('');
   const data = [
     {text: 'hello sir How are You'},

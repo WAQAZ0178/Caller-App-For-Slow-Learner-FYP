@@ -17,7 +17,7 @@ import styles from './Dialer_styles';
 import {wp, hp} from '../../Global/Styles/Scalling';
 import {fontFamily, fontSize} from '../../Global/Styles/Fonts';
 import {black, theme, theme2, white} from '../../Global/Styles/Theme';
-const Dialer = () => {
+const Dialer = ({navigation}) => {
   const keypadNumber = [
     {number: 1},
     {number: 2},

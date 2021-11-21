@@ -2,61 +2,67 @@ import 'react-native-gesture-handler';
 import * as React from 'react';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {StyleSheet} from 'react-native';
-import Home from '../../src/pages/Home/Home';
-import Cart from '../../src/pages/Cart Page/Cart';
-import HomeIcon from '../../src/Assets/Svgs/Home.svg';
-import CartIcon from '../../src/Assets/Svgs/Home_Cart_Icon.svg';
-import ProfileIcon from '../../src/Assets/Svgs/Profile.svg';
-import MyOrderIcon from '../../src/Assets/Svgs/Home_Order_Icon.svg';
-import {hp, wp} from '../Global/Styles/Scalling';
-import Zocial from 'react-native-vector-icons/Zocial';
-import Material from 'react-native-vector-icons/MaterialIcons';
-import Feather from 'react-native-vector-icons/Feather';
+import ContactList from '../../src/pages/ContactList/ContactList';
+import MyTemplates from '../../src/pages/my Templates/My_Templates';
+import Home from '../pages/Home/Home';
+import Dialer from '../../src/pages/Dialer/Dialer';
+
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+// import HomeIcon from '../../src/Assets/SVGS/HomeIcon.svg';
+// import RecodingIcon from '../../src/Assets/SVGS/Recoding.svg';
+import SettingIcon from '../../src/Assets/Svgs/Setting.svg';
+// import MicIcon from '../../src/Assets/SVGS/Mic.svg';
+
+import {hp, wp} from '../Global/Styles/Scalling';
+
 import {theme, theme2, white} from '../Global/Styles/Theme';
 
 const Tab = createMaterialBottomTabNavigator();
 
-const TabNavigator = () => {
+const TabNavigator = ({navigation}) => {
   return (
     <Tab.Navigator
       //   keyboardHidesTabBar={true}
       initialRouteName="Home"
-      activeColor={white}
-      inactiveColor="grey"
+      activeColor={theme}
+      inactiveColor="#B7B7B7"
       barStyle={{
-        backgroundColor: theme,
+        backgroundColor: white,
         // borderTopColor: white,
         // borderTopWidth: 0.5,
       }}
       tabBarOptions={{
         style: {
           backgroundColor: 'black',
-          height: hp(10),
+          // height: hp(12),
           // borderTopWidth: 1,
           // borderTopColor: 'black',
           // paddingTop: hp(1),
         },
       }}>
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="Dialer"
+        component={Dialer}
         options={{
-          title: 'HOME',
+          title: '',
           tabBarIcon: ({color}) => (
-            // <AntDesign name="home" color={color} size={25} />
-            <HomeIcon width={25} height={25} />
+            <MaterialCommunityIcons name="dialpad" color={color} size={23} />
+            // <HomeIcon width={25} height={25} strol={color} />
           ),
         }}
       />
 
       <Tab.Screen
-        name="Order_History"
-        component={Order_History}
+        name="Home"
+        component={Home}
         options={{
-          title: 'MY ORDERS',
-          tabBarIcon: ({color}) => <MyOrderIcon width={25} height={25} />,
+          title: '',
+          tabBarIcon: ({color}) => (
+            <MaterialIcons name="call" color={color} size={23} />
+          ),
 
           // headerStyle: {
           //   backgroundColor: '#f4511e',
@@ -68,20 +74,23 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Cart"
-        component={Cart}
+        name="My_Template"
+        component={MyTemplates}
         options={{
-          title: 'CART',
-          tabBarIcon: ({color}) => <CartIcon width={25} height={25} />,
+          title: '',
+          tabBarIcon: ({color}) => (
+            <MaterialCommunityIcons name="microphone" color={color} size={23} />
+          ),
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={Profile}
+        name="Contact_List"
+        component={ContactList}
         options={{
-          title: 'Profile',
-
-          tabBarIcon: ({color}) => <ProfileIcon width={25} height={25} fil />,
+          title: '',
+          tabBarIcon: ({color}) => (
+            <SettingIcon width={23} height={23} fill={color} />
+          ),
         }}
       />
     </Tab.Navigator>

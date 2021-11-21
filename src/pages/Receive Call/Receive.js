@@ -15,7 +15,7 @@ import styles from './Receive_styles';
 import {wp, hp} from '../../Global/Styles/Scalling';
 import {fontFamily, fontSize} from '../../Global/Styles/Fonts';
 import {theme, theme2, white} from '../../Global/Styles/Theme';
-const Receive = () => {
+const Receive = ({navigation}) => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={theme} />

@@ -1,6 +1,13 @@
 //import liraries
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, SafeAreaView, StatusBar} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  StatusBar,
+  NativeAppEventEmitter,
+} from 'react-native';
 import {theme} from './src/Global/Styles/Theme';
 import ContactList from './src/pages/ContactList/ContactList';
 import Dialer from './src/pages/Dialer/Dialer';
@@ -12,12 +19,17 @@ import My_Templates from './src/pages/my Templates/My_Templates';
 import Receive from './src/pages/Receive Call/Receive';
 import Signup from './src/pages/Signup/Signup';
 import Test from './src/pages/test';
+import {NavigationContainer} from '@react-navigation/native';
+import StackNavigation from './src/Navigations/StackNavigation';
 // create a component
 const App = () => {
   return (
-    <View style={styles.container}>
-      <Logs />
-    </View>
+    // <View style={styles.container}>
+    //   <Logs />
+    // </View>
+    <NavigationContainer>
+      <StackNavigation />
+    </NavigationContainer>
   );
 };
 

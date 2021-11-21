@@ -75,7 +75,11 @@ const Login = ({navigation}) => {
             style={styles.input}
           />
         </View>
-        <CustomiseButton title="Login" customstyle={styles.buttonStyle} />
+        <CustomiseButton
+          onPress={() => navigation.navigate('Bottom_Tab')}
+          title="Login"
+          customstyle={styles.buttonStyle}
+        />
         <View>
           <TouchableOpacity style={styles.navLink}>
             <Text style={{color: white}}>

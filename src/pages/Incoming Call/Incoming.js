@@ -13,7 +13,7 @@ import styles from './Incoming_styles';
 import {wp, hp} from '../../Global/Styles/Scalling';
 import {fontFamily, fontSize} from '../../Global/Styles/Fonts';
 import {theme, theme2, white} from '../../Global/Styles/Theme';
-const Incoming = () => {
+const Incoming = ({navigation}) => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={theme} />

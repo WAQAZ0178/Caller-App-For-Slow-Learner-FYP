@@ -14,7 +14,7 @@ import styles from './My_Templates_styles';
 import Data from './templatesdata';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 // create a component
-const My_Templates = () => {
+const My_Templates = ({navigation}) => {
   const renderMessages = item => {
     return (
       <TouchableOpacity
