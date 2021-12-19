@@ -1,5 +1,5 @@
 //import liraries
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   StatusBar,
   NativeAppEventEmitter,
+  Platform,
 } from 'react-native';
 import {theme} from './src/Global/Styles/Theme';
 import ContactList from './src/pages/ContactList/ContactList';
@@ -21,11 +22,12 @@ import Signup from './src/pages/Signup/Signup';
 import Test from './src/pages/test';
 import {NavigationContainer} from '@react-navigation/native';
 import StackNavigation from './src/Navigations/StackNavigation';
-// create a component
+
 const App = () => {
+  useEffect(() => {}, []);
   return (
     // <View style={styles.container}>
-    //   <Logs />
+    //   <Test />
     // </View>
     <NavigationContainer>
       <StackNavigation />

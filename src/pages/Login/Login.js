@@ -7,19 +7,31 @@ import {
   ScrollView,
 } from 'react-native';
 import styles from './Login-styles';
-import Octicons from 'react-native-vector-icons/Octicons';
+
 import momemt from 'moment';
-import {wp, hp} from '../../Global/Styles/Scalling';
-import {fontFamily, fontSize} from '../../Global/Styles/Fonts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {theme, theme2, white} from '../../Global/Styles/Theme';
 import LoginSVG from '../../Assets/Svgs/themesvg.svg';
 import {TextInput} from 'react-native-paper';
 import CustomiseButton from '../../Components/customizeButton/CustomizedButton';
+import URLS from '../../Constants/Constants';
+import {getData} from '../../Constants/API';
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
   const [showPassword, setshowPassword] = useState(true);
   const [showConfirmPassword, setshowConfirmPassword] = useState(true);
+
+  const Login = async () => {
+    const formData = new FormData();
+    if (email || Password) {
+      formData.append('email', email);
+      formData.append('username', Password);
+      const res = await getData('url', formData);
+      // navigation.navigate('Bottom_Tab')
+    }
+  };
+
   return (
     <View style={styles.mainView}>
       <ScrollView
@@ -76,7 +88,7 @@ const Login = ({navigation}) => {
           />
         </View>
         <CustomiseButton
-          onPress={() => navigation.navigate('Bottom_Tab')}
+          onPress={() => Login()}
           title="Login"
           customstyle={styles.buttonStyle}
         />

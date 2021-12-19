@@ -6,16 +6,12 @@ import ContactList from '../../src/pages/ContactList/ContactList';
 import MyTemplates from '../../src/pages/my Templates/My_Templates';
 import Home from '../pages/Home/Home';
 import Dialer from '../../src/pages/Dialer/Dialer';
-
+import {gray} from '../Global/Styles/Theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-// import HomeIcon from '../../src/Assets/SVGS/HomeIcon.svg';
-// import RecodingIcon from '../../src/Assets/SVGS/Recoding.svg';
 import SettingIcon from '../../src/Assets/Svgs/Setting.svg';
-// import MicIcon from '../../src/Assets/SVGS/Mic.svg';
-
 import {hp, wp} from '../Global/Styles/Scalling';
 
 import {theme, theme2, white} from '../Global/Styles/Theme';
@@ -28,7 +24,8 @@ const TabNavigator = ({navigation}) => {
       //   keyboardHidesTabBar={true}
       initialRouteName="Home"
       activeColor={theme}
-      inactiveColor="#B7B7B7"
+      // inactiveColor="#B7B7B7"
+      inactiveColor="#808080"
       barStyle={{
         backgroundColor: white,
         // borderTopColor: white,
@@ -89,7 +86,7 @@ const TabNavigator = ({navigation}) => {
         options={{
           title: '',
           tabBarIcon: ({color}) => (
-            <SettingIcon width={23} height={23} fill={color} />
+            <MaterialIcons name="contacts" size={25} color={color} />
           ),
         }}
       />

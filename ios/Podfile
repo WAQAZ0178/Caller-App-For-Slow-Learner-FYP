@@ -14,6 +14,8 @@ target 'Call_App_Slow_Learner_FYP' do
 
   pod 'TextToSpeech', :path => '../node_modules/react-native-tts'
 
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-async-storage/async-storage'
+
   target 'Call_App_Slow_Learner_FYPTests' do
     inherit! :complete
     # Pods for testing

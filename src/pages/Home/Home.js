@@ -1,5 +1,5 @@
 //import liraries
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,9 +14,50 @@ import {black, theme, white} from '../../Global/Styles/Theme';
 import styles from './Home_styles';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Tts from 'react-native-tts';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {gray} from '../../Global/Styles/Theme';
+import {openDatabase} from 'react-native-sqlite-storage';
+var db = openDatabase({name: 'user_Template.db'});
 
 const Home = ({navigation}) => {
+  const [tabBarButton, settabBarButton] = useState('All');
   const [input, setinput] = useState('');
+  useEffect(() => {
+    checkDatabase();
+    getAllSQLLiteTemplate();
+  }, []);
+  const getAllSQLLiteTemplate = () => {
+    db.transaction(tx => {
+      tx.executeSql('SELECT * FROM user_template', [], (tx, results) => {
+        console.log(results);
+        var temp = [];
+        for (let i = 0; i < results.rows.length; ++i)
+          temp.push(results.rows.item(i));
+        console.log(temp);
+      });
+    });
+  };
+  const storeTemplate = async txt => {
+    speak_Search_Text(txt);
+    db.transaction(function (txn) {
+      txn.executeSql(
+        'INSERT INTO user_template (template_text,is_sync,template_frequency) VALUES (?,?,?)',
+        [txt.toString(), 'false', 1],
+        (t, re) => console.log('success'),
+        (t, re) => console.log('failed'),
+      );
+    });
+  };
+  const checkDatabase = () => {
+    db.transaction(function (txn) {
+      txn.executeSql(
+        'CREATE TABLE IF NOT EXISTS user_template(tid INTEGER PRIMARY KEY AUTOINCREMENT, template_text TEXT, is_sync TEXT, template_frequency INTEGER)',
+        [],
+        (t, re) => console.log('success'),
+        (t, re) => console.log('failed'),
+      );
+    });
+  };
   const data = [
     {text: 'hello sir How are You'},
     {text: `I'm Fine sir `},
@@ -36,7 +77,7 @@ const Home = ({navigation}) => {
     return (
       <TouchableOpacity
         style={styles.templateButton}
-        onPress={() => speak_Search_Text(item.text)}>
+        onPress={() => setinput(input + item.text)}>
         <Text
           numberOfLines={1}
           ellipsizeMode="tail"
@@ -57,7 +98,7 @@ const Home = ({navigation}) => {
           onChangeText={text => setinput(text)}
           placeholderTextColor={black}
           style={styles.inputBox}></TextInput>
-        <TouchableOpacity onPress={() => speak_Search_Text(input)}>
+        <TouchableOpacity onPress={() => storeTemplate(input)}>
           <Icon name="sound" color={black} size={20} />
         </TouchableOpacity>
       </View>
@@ -67,49 +108,92 @@ const Home = ({navigation}) => {
         </Text>
         <View style={styles.ButtonContainer}>
           <TouchableOpacity
-            onPress={() => speak_Search_Text('SALAM')}
+            onPress={() => setinput(input + ' ASSALAM O ALIKUM ')}
             style={styles.mostFrequentButton}>
             <Text style={styles.ButtonText}>Salam</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => speak_Search_Text('WA SALAM')}
+            onPress={() => setinput(input + ' WA SALAM')}
             style={styles.mostFrequentButton}>
             <Text style={styles.ButtonText}> Wa Salam</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.ButtonContainer}>
           <TouchableOpacity
-            onPress={() => speak_Search_Text('ALLAH HAFIZ')}
+            onPress={() => setinput(input + ' ALLAH HAFIZ ')}
             style={styles.mostFrequentButton}>
             <Text style={styles.ButtonText}>Allah Hafiz</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => speak_Search_Text('Okay')}
+            onPress={() => setinput(input + ' OKAY ')}
             style={styles.mostFrequentButton}>
             <Text style={styles.ButtonText}>okay</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.ButtonContainer}>
           <TouchableOpacity
-            onPress={() => speak_Search_Text('Yes')}
+            onPress={() => setinput(input + ' Yes ')}
             style={styles.mostFrequentButton}>
             <Text style={styles.ButtonText}>Yes</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => speak_Search_Text('NO')}
+            onPress={() => setinput(input + ' NO ')}
             style={styles.mostFrequentButton}>
             <Text style={styles.ButtonText}>No</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <Text style={styles.mostFrequentTextHeading}>You'r Templates</Text>
-      <View style={styles.flatListContainer}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={data}
-          renderItem={({item}) => renderTemplates(item)}
-          keyExtractor={(item, index) => index.toString()}
-        />
+      <View style={styles.bottomTabContainer}>
+        <View style={styles.bottomTab}>
+          <TouchableOpacity
+            onPress={() => settabBarButton('All')}
+            style={{
+              ...styles.tabBarButton,
+              borderBottomColor: tabBarButton === 'All' ? theme : 'white',
+            }}>
+            <Text
+              style={{
+                ...styles.tabBarButtonText,
+                color: tabBarButton === 'All' ? theme : '#808080',
+              }}>
+              All Templates
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => settabBarButton('Frequent')}
+            style={{
+              ...styles.tabBarButton,
+              borderBottomColor: tabBarButton === 'Frequent' ? theme : 'white',
+            }}>
+            <Text
+              style={{
+                ...styles.tabBarButtonText,
+                color: tabBarButton === 'Frequent' ? theme : '#808080',
+              }}>
+              Most Frequent
+            </Text>
+          </TouchableOpacity>
+        </View>
+        {tabBarButton === 'All' ? (
+          <View style={styles.flatListContainer}>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={data}
+              renderItem={({item}) => renderTemplates(item)}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
+        ) : (
+          <View style={styles.flatListContainer}>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={data}
+              renderItem={({item}) => renderTemplates(item)}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
+        )}
       </View>
     </View>
   );

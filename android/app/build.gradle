@@ -130,6 +130,7 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+
     defaultConfig {
         applicationId "com.call_app_slow_learner_fyp"
         minSdkVersion rootProject.ext.minSdkVersion

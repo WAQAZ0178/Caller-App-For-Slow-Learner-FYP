@@ -73,9 +73,37 @@ const styles = StyleSheet.create({
     color: black,
     fontFamily: fontFamily.UbuntuRegular,
     fontSize: 15,
-
     textAlign: 'left',
     width: wp(70),
+  },
+  bottomTabContainer: {
+    flex: 1,
+  },
+  bottomTab: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: hp(7.33),
+    width: wp(89.33),
+    alignSelf: 'center',
+    borderRadius: 10,
+    marginTop: hp(2.69),
+    backgroundColor: white,
+    marginBottom: hp(5),
+  },
+  tabBarButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderBottomWidth: 3,
+    borderBottomColor: white,
+    height: hp(6),
+    width: wp(35),
+  },
+  tabBarButtonText: {
+    color: black,
+    fontSize: 20,
+    fontFamily: fontFamily.UbuntuMedium,
+    lineHeight: 24,
   },
 });
 
