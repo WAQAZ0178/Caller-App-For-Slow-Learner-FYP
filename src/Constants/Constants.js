@@ -1,5 +1,5 @@
 const BASEURL2 = 'http://165.22.103.63:8011/media/';
-const BASEURL = 'http://165.22.103.63:8011/api/';
+const BASEURL = 'http://192.168.100.9/Slow_Learner_Api/api/home/';
 const URLS = {
   BASEURL,
   BASEURL2,

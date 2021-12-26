@@ -14,7 +14,7 @@ import {black, theme, white} from '../../Global/Styles/Theme';
 import styles from './Home_styles';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Tts from 'react-native-tts';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {gray} from '../../Global/Styles/Theme';
 import {openDatabase} from 'react-native-sqlite-storage';
 var db = openDatabase({name: 'user_Template.db'});
@@ -22,19 +22,37 @@ var db = openDatabase({name: 'user_Template.db'});
 const Home = ({navigation}) => {
   const [tabBarButton, settabBarButton] = useState('All');
   const [input, setinput] = useState('');
+  const [token, settoken] = useState('');
+  const [flag, setflag] = useState(0);
+  const [sqlLiteTemplate, setsqlLiteTemplate] = useState();
+
   useEffect(() => {
+    setflag(0);
     checkDatabase();
     getAllSQLLiteTemplate();
+    getToken();
   }, []);
-  const getAllSQLLiteTemplate = () => {
-    db.transaction(tx => {
+
+  useEffect(() => {
+    if (flag > 0) {
+      getAllSQLLiteTemplate();
+    }
+  }, [flag]);
+
+  const getToken = async () => {
+    var user = await AsyncStorage.getItem('user');
+    settoken(user);
+  };
+  const getAllSQLLiteTemplate = async () => {
+    await db.transaction(tx => {
       tx.executeSql('SELECT * FROM user_template', [], (tx, results) => {
         console.log(results);
         var temp = [];
         for (let i = 0; i < results.rows.length; ++i)
           temp.push(results.rows.item(i));
-        console.log(temp);
+        console.log('all sql lite templates', temp);
       });
+      setsqlLiteTemplate(temp);
     });
   };
   const storeTemplate = async txt => {
@@ -47,6 +65,7 @@ const Home = ({navigation}) => {
         (t, re) => console.log('failed'),
       );
     });
+    setflag(flag + 1);
   };
   const checkDatabase = () => {
     db.transaction(function (txn) {
@@ -188,7 +207,7 @@ const Home = ({navigation}) => {
           <View style={styles.flatListContainer}>
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={data}
+              data={sqlLiteTemplate}
               renderItem={({item}) => renderTemplates(item)}
               keyExtractor={(item, index) => index.toString()}
             />

@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import ContactList from '../../src/pages/ContactList/ContactList';
@@ -12,13 +12,13 @@ import Signup from '../pages/Signup/Signup';
 import Receive from '../pages/Receive Call/Receive';
 import Incoming from '../pages/Incoming Call/Incoming';
 import BottomTab from './BottomTab';
-
+import Splash from '../pages/Splash/Splash';
 const Stack = createStackNavigator();
 const StackNavigation = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="Login"
+      initialRouteName={'Splash'}
       mode="modal">
       <Stack.Screen
         options={{
@@ -26,6 +26,16 @@ const StackNavigation = () => {
         }}
         name="Home"
         component={Home}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="Splash"
+        component={Splash}
         options={{
           headerShown: false,
         }}

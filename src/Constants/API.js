@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import { Platform } from 'react-native';
+import {Platform} from 'react-native';
 import URLS from './Constants';
 const getUrl = rel => `${URLS.BASEURL}${rel}`;
 
@@ -28,11 +28,11 @@ export const getData = async (relativeUrl, data) => {
   const url = getUrl(relativeUrl);
   console.log('url :', url);
   const config = {
-    method: 'get',
+    method: 'post',
     url: url,
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: '*/*',
+      'Content-Type': 'application/json,multipart/form-data',
     },
     data: data,
   };
@@ -40,7 +40,29 @@ export const getData = async (relativeUrl, data) => {
   const response = await axios(config)
     .then(res => res)
     .catch(error => {
-      return {status: 404};
+      return error;
+      //  {status: 404};
+    });
+  return response;
+};
+
+export const GetTempaltes = async relativeUrl => {
+  const url = getUrl(relativeUrl);
+  console.log('url :', url);
+  const config = {
+    method: 'get',
+    url: url,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const response = await axios(config)
+    .then(res => res)
+    .catch(error => {
+      return error;
+      //  {status: 404};
     });
   return response;
 };
@@ -67,7 +89,7 @@ export const postData = async (relativeUrl, data, id) => {
     });
   return response;
 };
-export const postFormData = async (relativeUrl, data, token) => {
+export const postFormData = async (relativeUrl, data) => {
   // console.log('data::::',data);
   // console.log('token::::',token);
   const url = getUrl(relativeUrl);
@@ -76,8 +98,7 @@ export const postFormData = async (relativeUrl, data, token) => {
     method: 'post',
     url: url,
     headers: {
-      'Content-Type': 'multipart/form-data; ',
-      Authorization: token,
+      'Content-Type': 'multipart/form-data, application/json',
     },
     data: data,
   };

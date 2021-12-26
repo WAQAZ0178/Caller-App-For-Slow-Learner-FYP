@@ -22,12 +22,13 @@ import Signup from './src/pages/Signup/Signup';
 import Test from './src/pages/test';
 import {NavigationContainer} from '@react-navigation/native';
 import StackNavigation from './src/Navigations/StackNavigation';
+import Splash from './src/pages/Splash/Splash';
 
 const App = () => {
   useEffect(() => {}, []);
   return (
     // <View style={styles.container}>
-    //   <Test />
+    //   <Splash />
     // </View>
     <NavigationContainer>
       <StackNavigation />

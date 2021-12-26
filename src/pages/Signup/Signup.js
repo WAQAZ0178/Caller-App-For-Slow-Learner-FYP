@@ -75,9 +75,11 @@ const Signup = ({navigation}) => {
             style={styles.input}
           />
         </View>
-        <CustomiseButton title="Login" customstyle={styles.buttonStyle} />
+        <CustomiseButton title="Sign Up" customstyle={styles.buttonStyle} />
         <View>
-          <TouchableOpacity style={styles.navLink}>
+          <TouchableOpacity
+            style={styles.navLink}
+            onPress={() => navigation.navigate('Login')}>
             <Text style={{color: white}}>
               Already have an account ?{' '}
               <Text style={{color: '#3A4385'}}> Login</Text>
