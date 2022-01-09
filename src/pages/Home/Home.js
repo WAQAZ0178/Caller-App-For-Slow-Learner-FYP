@@ -10,101 +10,194 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import {black, theme, white} from '../../Global/Styles/Theme';
+import {black, theme, theme2, white} from '../../Global/Styles/Theme';
 import styles from './Home_styles';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Tts from 'react-native-tts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {gray} from '../../Global/Styles/Theme';
 import {openDatabase} from 'react-native-sqlite-storage';
-var db = openDatabase({name: 'user_Template.db'});
+var db = openDatabase({name: 'My_Template.db'});
+import {useIsFocused} from '@react-navigation/native';
 
 const Home = ({navigation}) => {
+  const isFocused = useIsFocused();
+
   const [tabBarButton, settabBarButton] = useState('All');
   const [input, setinput] = useState('');
   const [token, settoken] = useState('');
   const [flag, setflag] = useState(0);
-  const [sqlLiteTemplate, setsqlLiteTemplate] = useState();
+  const [sqlLiteTemplate, setsqlLiteTemplate] = useState([]);
+  const [speechRate, setSpeechRate] = useState(0.5);
+  const [speechPitch, setSpeechPitch] = useState(1);
 
   useEffect(() => {
-    setflag(0);
-    checkDatabase();
+    Tts.setDefaultLanguage('ur-pk-x-urm-local');
+    Tts.setDefaultRate(speechRate);
+    Tts.setDefaultPitch(speechPitch);
     getAllSQLLiteTemplate();
+    checkDatabase();
     getToken();
-  }, []);
+  }, [isFocused]);
 
-  useEffect(() => {
-    if (flag > 0) {
-      getAllSQLLiteTemplate();
-    }
-  }, [flag]);
+  // useEffect(() => {
+  //   getAllSQLLiteTemplate();
+  // }, [flag]);
+
+  const updateTemplate = item => {
+    console.log(item);
+    var id = item.tid;
+    var frequency = parseInt(item.template_frequency);
+    frequency = frequency + 1;
+    console.log(frequency);
+    db.transaction(tx => {
+      tx.executeSql(
+        'UPDATE user_template set template_frequency=? where tid=?',
+        [frequency, id],
+        (tx, results) => {
+          console.log('Results', results.rowsAffected);
+          // if (results.rowsAffected > 0) {
+          //   Alert.alert(
+          //     'Success',
+          //     'User updated successfully',
+          //     [
+          //       {
+          //         text: 'Ok',
+          //         onPress: () => navigation.navigate('HomeScreen'),
+          //       },
+          //     ],
+          //     {cancelable: false},
+          //   );
+          // } else alert('Updation Failed');
+        },
+      );
+    });
+    getAllSQLLiteTemplate();
+  };
 
   const getToken = async () => {
     var user = await AsyncStorage.getItem('user');
     settoken(user);
   };
-  const getAllSQLLiteTemplate = async () => {
-    await db.transaction(tx => {
+
+  const getAllSQLLiteTemplate = () => {
+    console.log('get data ');
+    const temp = [];
+    db.transaction(tx => {
       tx.executeSql('SELECT * FROM user_template', [], (tx, results) => {
-        console.log(results);
-        var temp = [];
-        for (let i = 0; i < results.rows.length; ++i)
+        for (let i = 0; i < results.rows.length; ++i) {
           temp.push(results.rows.item(i));
-        console.log('all sql lite templates', temp);
+        }
+        // console.log('all data from databse ', temp);
+        // console.log('before', temp);
+        var arr = temp.sort((a, b) => {
+          // console.log(a.template_frequency + '' + b.template_frequency);
+          return b.template_frequency - a.template_frequency;
+        });
+        // console.log('after', arr);
+        setsqlLiteTemplate(arr);
       });
-      setsqlLiteTemplate(temp);
     });
+    console.log('temp array', temp);
   };
   const storeTemplate = async txt => {
     speak_Search_Text(txt);
+
     db.transaction(function (txn) {
       txn.executeSql(
-        'INSERT INTO user_template (template_text,is_sync,template_frequency) VALUES (?,?,?)',
-        [txt.toString(), 'false', 1],
-        (t, re) => console.log('success'),
+        'SELECT * FROM user_template  where template_text=?',
+        [txt],
+        (t, re) => {
+          if (re.rows.length > 0) {
+            const row = re.rows.item(0);
+            var id = row.tid;
+            var frequency = parseInt(row.template_frequency);
+            frequency = frequency + 1;
+            txn.executeSql(
+              'UPDATE user_template set template_frequency=? where tid=?',
+              [frequency, id],
+              (tx, results) => {
+                console.log('Results', results.rowsAffected);
+              },
+            );
+          } else {
+            txn.executeSql(
+              'INSERT INTO user_template (template_text,is_sync,template_frequency) VALUES (?,?,?)',
+              [txt.toString(), 'false', 1],
+              (t, re) => console.log('success', re),
+              (t, re) => console.log('failed'),
+            );
+          }
+        },
         (t, re) => console.log('failed'),
       );
     });
-    setflag(flag + 1);
+    getAllSQLLiteTemplate();
+    // setflag(flag + 1);
+    setinput('');
   };
   const checkDatabase = () => {
     db.transaction(function (txn) {
       txn.executeSql(
         'CREATE TABLE IF NOT EXISTS user_template(tid INTEGER PRIMARY KEY AUTOINCREMENT, template_text TEXT, is_sync TEXT, template_frequency INTEGER)',
         [],
-        (t, re) => console.log('success'),
+        (t, re) => console.log('database is created ', re.rows.item.length),
         (t, re) => console.log('failed'),
       );
     });
   };
   const data = [
-    {text: 'hello sir How are You'},
-    {text: `I'm Fine sir `},
-    {text: 'I will be there soon '},
-    {text: 'no problem dear'},
-    {text: 'yes ofcourse its important meeting'},
-    {text: 'okay  i will wait  '},
-    {text: 'sorry i dont have time '},
-    {text: 'let me know when you get the message '},
+    {template_text: 'hello sir How are You'},
+    {template_text: `I'm Fine sir `},
+    {template_text: 'I will be there soon '},
+    {template_text: 'no problem dear'},
+    {template_text: 'yes ofcourse its important meeting'},
+    {template_text: 'okay  i will wait  '},
+    {template_text: 'sorry i dont have time '},
+    {template_text: 'let me know when you get the message '},
   ];
-  const speak_Search_Text = text => {
-    Tts.setDefaultLanguage('ur-PK');
+  const speak_Search_Text = async text => {
+    await Tts.setDefaultLanguage('ur-pk-x-urm-local');
     // Tts.setDefaultVoice('com.apple.ttsbundle.Moira-compact');
     Tts.speak(text);
   };
+  const renderFrequentTemplates = item => {
+    // console.log(item);
+    return (
+      <View style={styles.templateButton}>
+        <TouchableOpacity
+          hitSlop={{top: 20, bottom: 20, left: 10, right: 10}}
+          onPress={() => setinput(input + item.template_text)}>
+          <Text
+            numberOfLines={2}
+            ellipsizeMode="tail"
+            style={styles.flatListButtonText}>
+            {item.template_text}
+          </Text>
+        </TouchableOpacity>
+        {/* <TouchableOpacity
+          // onPress={() => updateTemplate(item)}
+          style={styles.speakerbutton}>
+          <Icon name="sound" color={black} size={25} />
+        </TouchableOpacity> */}
+      </View>
+    );
+  };
   const renderTemplates = item => {
     return (
-      <TouchableOpacity
-        style={styles.templateButton}
-        onPress={() => setinput(input + item.text)}>
-        <Text
-          numberOfLines={1}
-          ellipsizeMode="tail"
-          style={styles.flatListButtonText}>
-          {item.text}
-        </Text>
-        <Icon name="sound" color={black} size={20} />
-      </TouchableOpacity>
+      <View style={styles.templateButton}>
+        <TouchableOpacity onPress={() => setinput(input + item.template_text)}>
+          <Text
+            numberOfLines={2}
+            ellipsizeMode="tail"
+            style={styles.flatListButtonText}>
+            {item.template_text}
+          </Text>
+        </TouchableOpacity>
+        {/* <TouchableOpacity style={styles.speakerbutton}>
+          <Icon name="sound" color={black} size={20} />
+        </TouchableOpacity> */}
+      </View>
     );
   };
   return (
@@ -127,12 +220,12 @@ const Home = ({navigation}) => {
         </Text>
         <View style={styles.ButtonContainer}>
           <TouchableOpacity
-            onPress={() => setinput(input + ' ASSALAM O ALIKUM ')}
+            onPress={() => setinput(input + ' Assalam O Alaikum')}
             style={styles.mostFrequentButton}>
             <Text style={styles.ButtonText}>Salam</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => setinput(input + ' WA SALAM')}
+            onPress={() => setinput(input + ' Walaikum Assalam')}
             style={styles.mostFrequentButton}>
             <Text style={styles.ButtonText}> Wa Salam</Text>
           </TouchableOpacity>
@@ -168,12 +261,12 @@ const Home = ({navigation}) => {
             onPress={() => settabBarButton('All')}
             style={{
               ...styles.tabBarButton,
-              borderBottomColor: tabBarButton === 'All' ? theme : 'white',
+              borderBottomColor: tabBarButton === 'All' ? white : theme2,
             }}>
             <Text
               style={{
                 ...styles.tabBarButtonText,
-                color: tabBarButton === 'All' ? theme : '#808080',
+                color: tabBarButton === 'All' ? white : '#808080',
               }}>
               All Templates
             </Text>
@@ -183,12 +276,12 @@ const Home = ({navigation}) => {
             onPress={() => settabBarButton('Frequent')}
             style={{
               ...styles.tabBarButton,
-              borderBottomColor: tabBarButton === 'Frequent' ? theme : 'white',
+              borderBottomColor: tabBarButton === 'Frequent' ? white : theme2,
             }}>
             <Text
               style={{
                 ...styles.tabBarButtonText,
-                color: tabBarButton === 'Frequent' ? theme : '#808080',
+                color: tabBarButton === 'Frequent' ? white : '#808080',
               }}>
               Most Frequent
             </Text>
@@ -208,7 +301,7 @@ const Home = ({navigation}) => {
             <FlatList
               showsVerticalScrollIndicator={false}
               data={sqlLiteTemplate}
-              renderItem={({item}) => renderTemplates(item)}
+              renderItem={({item}) => renderFrequentTemplates(item)}
               keyExtractor={(item, index) => index.toString()}
             />
           </View>

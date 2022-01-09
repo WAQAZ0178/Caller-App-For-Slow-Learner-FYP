@@ -28,7 +28,7 @@ const App = () => {
   useEffect(() => {}, []);
   return (
     // <View style={styles.container}>
-    //   <Splash />
+    //   <Test />
     // </View>
     <NavigationContainer>
       <StackNavigation />

@@ -10,6 +10,7 @@ import {
   ScrollView,
   TextInput,
   PermissionsAndroid,
+  Linking,
 } from 'react-native';
 import styles from './ContactList-styles';
 import Octicons from 'react-native-vector-icons/Octicons';
@@ -41,9 +42,10 @@ const ContactList = ({navigation}) => {
     addContact();
   }, []);
   const renderMessages = item => {
+    // console.log(item.phoneNumbers[0].number);
     return (
       <TouchableOpacity
-        // onPress={() => navigation.navigate('Conversation')}
+        onPress={() => Linking.openURL(`tel:${item.phoneNumbers[0].number}`)}
         style={{...styles.contactContainer}}>
         <View style={styles.dpContainer}>
           <Image

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
+  Linking,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
@@ -16,8 +17,21 @@ import styles from './Dialer_styles';
 
 import {wp, hp} from '../../Global/Styles/Scalling';
 import {fontFamily, fontSize} from '../../Global/Styles/Fonts';
-import {black, theme, theme2, white} from '../../Global/Styles/Theme';
+import {
+  black,
+  gray,
+  midGray,
+  theme,
+  theme2,
+  white,
+} from '../../Global/Styles/Theme';
 const Dialer = ({navigation}) => {
+  const RemoveLastDigit = () => {
+    if (number.length > 0) {
+      var newStr = number.slice(0, -1);
+      setnumber(newStr);
+    }
+  };
   const keypadNumber = [
     {number: 1},
     {number: 2},
@@ -32,11 +46,13 @@ const Dialer = ({navigation}) => {
     {number: 0},
     {number: '#'},
   ];
-  const [number, setnumber] = useState('03447568968');
+  const [number, setnumber] = useState('');
   const renderNumber = item => {
     return (
-      <TouchableOpacity style={styles.keypadButton}>
-        {console.log('hello')}
+      <TouchableOpacity
+        hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+        onPress={() => setnumber(number + item.number)}
+        style={styles.keypadButton}>
         <Text style={styles.keypadNumberButtonText}>{item.number}</Text>
       </TouchableOpacity>
     );
@@ -49,35 +65,45 @@ const Dialer = ({navigation}) => {
           <TextInput
             style={styles.input}
             placeholder="Enter Mobile number"
-            placeholderTextColor="black"
+            placeholderTextColor={'red'}
+            placeholderTextColor={theme}
             value={number}
-            onChangeText={txt => setnumber(txt)}
+            editable={false}
+            maxLength={11}
+            // onChangeText={txt => setnumber(txt)}
           />
-          <AntDesign
-            style={{marginTop: hp(2)}}
-            name="close"
-            color="black"
-            size={25}
-          />
+          <TouchableOpacity
+            hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+            onPress={() => RemoveLastDigit()}>
+            <AntDesign
+              style={{marginTop: hp(2)}}
+              name="close"
+              color={theme}
+              size={25}
+            />
+          </TouchableOpacity>
         </View>
 
         <View
           style={{
             alignSelf: 'center',
-            marginTop: hp(4),
+            marginTop: hp(2),
             // borderWidth: 1,
             // borderColor: black,
-            height: hp(35),
+            height: hp(37),
           }}>
           <FlatList
             data={keypadNumber}
             numColumns={3}
+            showsVerticalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({item}) => renderNumber(item)}
           />
         </View>
         <View style={styles.bottomButton}>
-          <TouchableOpacity style={styles.callButton}>
+          <TouchableOpacity
+            onPress={() => Linking.openURL(`tel:${number}`)}
+            style={styles.callButton}>
             <Text style={{...styles.keypadNumberButtonText, color: white}}>
               Call
             </Text>

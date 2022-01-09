@@ -1,6 +1,12 @@
 import {StyleSheet} from 'react-native';
 import {hp, wp} from '../../Global/Styles/Scalling';
-import {black, fontColor, theme, white} from '../../Global/Styles/Theme';
+import {
+  black,
+  fontColor,
+  theme,
+  theme2,
+  white,
+} from '../../Global/Styles/Theme';
 import {fontFamily} from '../../Global/Styles/Fonts';
 const styles = StyleSheet.create({
   container: {
@@ -46,13 +52,21 @@ const styles = StyleSheet.create({
   mostFrequentButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: white,
+    backgroundColor: theme2,
     width: wp(40),
     height: hp(5),
     borderRadius: 10,
+    shadowColor: white,
+    shadowOffset: {
+      width: 0,
+      height: 15,
+    },
+    shadowOpacity: 0.56,
+    shadowRadius: 16.0,
+    elevation: 5,
   },
   ButtonText: {
-    color: black,
+    color: white,
     fontFamily: fontFamily.UbuntuRegular,
     fontSize: 15,
   },
@@ -61,20 +75,37 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: wp(4),
     alignItems: 'center',
-    backgroundColor: white,
-    width: wp(90),
+    backgroundColor: theme2,
+    width: wp(88),
     alignSelf: 'center',
-    height: hp(6),
+    height: hp(8),
     borderRadius: 10,
     marginVertical: hp(1),
     flexDirection: 'row',
+    shadowColor: white,
+    shadowOffset: {
+      width: 0,
+      height: 15,
+    },
+    shadowOpacity: 0.56,
+    shadowRadius: 16.0,
+    elevation: 3,
   },
   flatListButtonText: {
-    color: black,
+    color: white,
     fontFamily: fontFamily.UbuntuRegular,
-    fontSize: 15,
+    fontSize: 16,
+    lineHeight: 21,
     textAlign: 'left',
-    width: wp(70),
+    width: wp(80),
+    // borderWidth: 1,
+    // borderColor: 'red',
+  },
+  speakerbutton: {
+    // borderWidth: 1,
+    // borderColor: 'red',
+    width: wp(20),
+    alignItems: 'center',
   },
   bottomTabContainer: {
     flex: 1,
@@ -88,7 +119,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     marginTop: hp(2.69),
-    backgroundColor: white,
+    backgroundColor: theme2,
     marginBottom: hp(5),
   },
   tabBarButton: {

@@ -44,7 +44,7 @@ const TabNavigator = ({navigation}) => {
         name="Dialer"
         component={Dialer}
         options={{
-          title: '',
+          title: 'Dialer',
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons name="dialpad" color={color} size={23} />
             // <HomeIcon width={25} height={25} strol={color} />
@@ -56,7 +56,7 @@ const TabNavigator = ({navigation}) => {
         name="Home"
         component={Home}
         options={{
-          title: '',
+          title: 'Template',
           tabBarIcon: ({color}) => (
             <MaterialIcons name="call" color={color} size={23} />
           ),
@@ -74,7 +74,7 @@ const TabNavigator = ({navigation}) => {
         name="My_Template"
         component={MyTemplates}
         options={{
-          title: '',
+          title: 'All Template',
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons name="microphone" color={color} size={23} />
           ),
@@ -84,7 +84,7 @@ const TabNavigator = ({navigation}) => {
         name="Contact_List"
         component={ContactList}
         options={{
-          title: '',
+          title: 'Contacts',
           tabBarIcon: ({color}) => (
             <MaterialIcons name="contacts" size={25} color={color} />
           ),

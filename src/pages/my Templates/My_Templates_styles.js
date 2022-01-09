@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {black, gray, theme, white} from '../../Global/Styles/Theme';
+import {black, gray, theme, theme2, white} from '../../Global/Styles/Theme';
 import {wp, hp} from '../../Global/Styles/Scalling';
 import {fontFamily, fontSize} from '../../Global/Styles/Fonts';
 
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   contactContainer: {
     flexDirection: 'row',
-    height: hp(8.12),
+    minHeight: hp(8.12),
     marginVertical: hp(1),
     alignSelf: 'center',
   },
@@ -25,16 +25,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: wp(95),
     justifyContent: 'space-evenly',
-    backgroundColor: white,
+    backgroundColor: theme2,
     paddingTop: hp(2),
     borderRadius: 10,
+    shadowColor: white,
+    shadowOffset: {
+      width: 12,
+      height: 15,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 16.0,
+    elevation: 3,
   },
   text: {
     fontFamily: fontFamily.UbuntuRegular,
     fontSize: 18,
     lineHeight: 21,
-    color: black,
-
+    color: white,
     width: wp(75),
     paddingLeft: wp(2),
   },
@@ -48,26 +55,31 @@ const styles = StyleSheet.create({
     color: '#424242',
     paddingTop: hp(1),
   },
-  contactSearchBarcontainer: {
+  syncContainer: {
     marginTop: hp(2),
     height: hp(6),
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
   },
-  searchContactListBox: {
+  syncButton: {
     height: hp(6),
-    width: wp(90),
-    alignSelf: 'center',
-    borderRadius: 10,
     backgroundColor: white,
-    fontSize: 15,
+    width: wp(95),
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+  },
+  SyncText: {
+    color: black,
+    fontSize: 22,
+    lineHeight: 26,
     fontFamily: fontFamily.UbuntuRegular,
-    paddingLeft: wp(5),
   },
   contactListHeadingText: {
-    fontSize: 18,
-    fontFamily: fontFamily.UbuntuBold,
-
+    fontSize: 24,
+    fontFamily: fontFamily.UbuntuMedium,
     color: white,
     marginTop: hp(3),
     alignSelf: 'center',

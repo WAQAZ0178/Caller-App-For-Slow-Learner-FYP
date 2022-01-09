@@ -48,9 +48,11 @@ const App = () => {
 
   const initTts = async () => {
     const voices = await Tts.voices();
+
     const availableVoices = voices
       .filter(v => !v.networkConnectionRequired && !v.notInstalled)
       .map(v => {
+        console.log(v);
         return {id: v.id, name: v.name, language: v.language};
       });
     let selectedVoice = null;

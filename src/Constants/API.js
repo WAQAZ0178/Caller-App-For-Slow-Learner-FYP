@@ -90,7 +90,7 @@ export const postData = async (relativeUrl, data, id) => {
   return response;
 };
 export const postFormData = async (relativeUrl, data) => {
-  // console.log('data::::',data);
+  console.log('data::::', data);
   // console.log('token::::',token);
   const url = getUrl(relativeUrl);
   console.log('url :', url);
@@ -105,8 +105,8 @@ export const postFormData = async (relativeUrl, data) => {
   const response = await axios(config)
     .then(res => res)
     .catch(error => {
-      // console.log(response);
-      return {status: 500};
+      console.log(response);
+      // return {status: 500};
     });
   return response;
 };
