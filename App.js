@@ -23,16 +23,19 @@ import Test from './src/pages/test';
 import {NavigationContainer} from '@react-navigation/native';
 import StackNavigation from './src/Navigations/StackNavigation';
 import Splash from './src/pages/Splash/Splash';
+import Account_Type from './src/pages/Account Type/Account_Type';
+import Received_Messages from './src/pages/Received Messages/Received_Messages';
+import Call_Detect from './src/pages/call detection/call_Detection';
 
 const App = () => {
   useEffect(() => {}, []);
   return (
-    // <View style={styles.container}>
-    //   <Test />
-    // </View>
-    <NavigationContainer>
-      <StackNavigation />
-    </NavigationContainer>
+    <View style={styles.container}>
+      <Call_Detect />
+    </View>
+    // <NavigationContainer>
+    //   <StackNavigation />
+    // </NavigationContainer>
   );
 };
 

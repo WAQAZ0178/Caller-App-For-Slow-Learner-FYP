@@ -31,6 +31,7 @@ const App = () => {
   const [text, setText] = useState('Enter Text like Hello About React');
 
   useEffect(() => {
+    Tts.voices().then(voices => console.log(voices));
     Tts.addEventListener('tts-start', _event => setTtsStatus('started'));
     Tts.addEventListener('tts-finish', _event => setTtsStatus('finished'));
     Tts.addEventListener('tts-cancel', _event => setTtsStatus('cancelled'));
