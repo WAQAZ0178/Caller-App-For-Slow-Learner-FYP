@@ -1,14 +1,19 @@
 //import liraries
 import React, {useState, useEffect} from 'react';
-import {View, Image, Text} from 'react-native';
+import {View, Image, Text, StatusBar} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './Splash-styles';
+import {theme} from '../../Global/Styles/Theme';
+import {postFormData} from '../../Constants/API';
 const Splash = ({navigation}) => {
   useEffect(() => {
     (async () => {
       const token = await AsyncStorage.getItem('user');
       setTimeout(() => {
-        if (token) {
+        const formdata = new FormData();
+        formdata.append('phone', token);
+        var res = await postFormData('AccountType', formdata);
+        if (res?.data?.account_type === 'dailer') {
           navigation.navigate('Bottom_Tab');
         } else {
           navigation.navigate('Login');
@@ -25,6 +30,7 @@ const Splash = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={theme} barStyle="light-content" />
       <Image
         style={styles.logo}
         resizeMode="contain"

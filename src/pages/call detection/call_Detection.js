@@ -2,9 +2,8 @@
 // https://aboutreact.com/detect-call-states/
 
 //Import React
-import React, {useState} from 'react';
-
-//Import required component
+import React, {useEffect, useState, useRef} from 'react';
+import styles from './styles';
 import {
   StyleSheet,
   Text,
@@ -14,25 +13,59 @@ import {
   FlatList,
   SafeAreaView,
   Image,
+  AppState,
 } from 'react-native';
-
-//Import Call Detector
+import Tts from 'react-native-tts';
 import CallDetectorManager from 'react-native-call-detection';
+import {GetTempaltes, postFormData} from '../../Constants/API';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Sound from 'react-native-sound';
+Sound.setCategory('Playback');
 
-const Call_Detect = () => {
-  //to keep callDetector reference
+const App = () => {
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+  const [Event, setEvent] = useState(false);
+  const arr = ['hello sir ', 'how are you', ' oh my god are you there sir '];
   let callDetector = undefined;
-
   let [callStates, setCallStates] = useState([]);
   let [isStart, setIsStart] = useState(false);
   let [flatListItems, setFlatListItems] = useState([]);
 
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        console.log('App has come to the foreground!');
+      }
+
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+      console.log('AppState', appState.current);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+
+    {
+      Event &&
+        setInterval(() => {
+          getAllMessages;
+        }, 10000);
+    }
+  }, [Event]);
+
   const callFriendTapped = () => {
-    Linking.openURL('tel:5555555555').catch(err => {
+    Linking.openURL('tel:03407503006').catch(err => {
       console.log(err);
     });
   };
-
+  function timeout(delay) {
+    return new Promise(res => setTimeout(res, delay));
+  }
   const startStopListener = () => {
     if (isStart) {
       console.log('Stop');
@@ -40,7 +73,7 @@ const Call_Detect = () => {
     } else {
       console.log('Start');
       callDetector = new CallDetectorManager(
-        (event, number) => {
+        async (event, number) => {
           console.log('event -> ', event + (number ? ' - ' + number : ''));
           var updatedCallStates = callStates;
           updatedCallStates.push(event + (number ? ' - ' + number : ''));
@@ -55,16 +88,25 @@ const Call_Detect = () => {
           // phoneNumber should store caller/called number
 
           if (event === 'Disconnected') {
-            // Do something call got disconnected
+            setEvent(false);
+            Tts.stop();
           } else if (event === 'Connected') {
+            console.log('  // Do something call got connected');
             // Do something call got connected
             // This clause will only be executed for iOS
           } else if (event === 'Incoming') {
-            // Do something call got incoming
+            console.log('  // Do something call got incoming');
           } else if (event === 'Dialing') {
             // Do something call got dialing
             // This clause will only be executed for iOS
           } else if (event === 'Offhook') {
+            setEvent(true);
+            await getAllMessages();
+            // console.log('  // Do something call got connected');
+            // for (let i = 0; i < arr.length; i++) {
+            //   await Tts.speak(arr[i]);
+            //   console.log(arr[i]);
+            // }
             //Device call state: Off-hook.
             // At least one call exists that is dialing,
             // active, or on hold,
@@ -92,6 +134,25 @@ const Call_Detect = () => {
     setIsStart(!isStart);
   };
 
+  const getAllMessages = async () => {
+    console.log('api data');
+    var delay = 1000;
+    const formdata = new FormData();
+    formdata.append('message_to', '03447568968');
+    var res = await postFormData('GetAllMessages', formdata);
+    var arr = res.data;
+    console.log(arr);
+    // await Tts.setDefaultLanguage('ur-PK');
+    await Tts.setDefaultLanguage('en-IE');
+    Tts.setDefaultVoice('ur-pk-x-cfn-network');
+    for (let i = 0; i < arr.length; i++) {
+      await timeout(delay);
+      Tts.speak(arr[i]?.message_text);
+      console.log(arr[i]?.message_text);
+      delay = 5000;
+    }
+  };
+
   const listSeparator = () => {
     return (
       <View
@@ -113,6 +174,10 @@ const Call_Detect = () => {
           </Text>
           <Text style={styles.headerText}>www.aboutreact.com</Text>
         </View>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => getAllMessages()}
+          style={styles.hiddenButtob}></TouchableOpacity>
         <FlatList
           style={{flex: 1}}
           data={flatListItems}
@@ -145,60 +210,4 @@ const Call_Detect = () => {
   );
 };
 
-export default Call_Detect;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F5FCFF',
-  },
-  header: {
-    backgroundColor: '#ff8c21',
-    padding: 10,
-  },
-  headerTextLarge: {
-    textAlign: 'center',
-    fontSize: 20,
-    color: 'white',
-  },
-  headerText: {
-    marginTop: 5,
-    textAlign: 'center',
-    fontSize: 18,
-    color: 'white',
-  },
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#ff8c21',
-    padding: 10,
-    justifyContent: 'center',
-    height: 60,
-    width: '100%',
-  },
-  buttonText: {
-    textAlign: 'center',
-    fontSize: 18,
-    color: 'white',
-  },
-  callLogs: {
-    padding: 16,
-    fontSize: 16,
-    color: '#333333',
-  },
-  fabStyle: {
-    position: 'absolute',
-    width: 60,
-    height: 60,
-    borderRadius: 60 / 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 30,
-    bottom: 30,
-    backgroundColor: 'yellow',
-  },
-  fabImageStyle: {
-    resizeMode: 'contain',
-    width: 20,
-    height: 20,
-  },
-});
+export default App;

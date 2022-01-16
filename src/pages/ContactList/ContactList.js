@@ -20,6 +20,7 @@ import {wp, hp} from '../../Global/Styles/Scalling';
 import {fontFamily, fontSize} from '../../Global/Styles/Fonts';
 import {theme, theme2} from '../../Global/Styles/Theme';
 import Contacts from 'react-native-contacts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const ContactList = ({navigation}) => {
   const [searchtxt, setSearchTxt] = useState('');
   const [searchContact, setsearchContact] = useState('');
@@ -41,11 +42,15 @@ const ContactList = ({navigation}) => {
   useEffect(() => {
     addContact();
   }, []);
+
+  const connectCall = async () => {
+    Linking.openURL(`tel:${item.phoneNumbers[0].number}`);
+  };
   const renderMessages = item => {
     // console.log(item.phoneNumbers[0].number);
     return (
       <TouchableOpacity
-        onPress={() => Linking.openURL(`tel:${item.phoneNumbers[0].number}`)}
+        onPress={() => connectCall()}
         style={{...styles.contactContainer}}>
         <View style={styles.dpContainer}>
           <Image

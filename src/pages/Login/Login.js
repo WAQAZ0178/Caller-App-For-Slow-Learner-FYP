@@ -13,26 +13,29 @@ import LoginSVG from '../../Assets/Svgs/themesvg.svg';
 import {TextInput} from 'react-native-paper';
 import CustomiseButton from '../../Components/customizeButton/CustomizedButton';
 import URLS from '../../Constants/Constants';
-import {postFormData, GetTempaltes} from '../../Constants/API';
+import {postFormData, GetTempaltes, getData} from '../../Constants/API';
 import moment from 'moment';
 const Login = ({navigation}) => {
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [Password, setPassword] = useState('');
   const [showPassword, setshowPassword] = useState(true);
   const [showConfirmPassword, setshowConfirmPassword] = useState(true);
 
   const Login = async () => {
     // console.log('email :' + email + ' passsword :' + Password);
-    if (email || Password) {
+    if (phone || Password) {
       const formData = new FormData();
-      formData.append('email', email);
+      formData.append('phone', phone);
       formData.append('password', Password);
-      const res = await postFormData('Login', formData);
+      const res = await getData('Login', formData);
       var data = res.data;
-      console.log(data.email);
-      await AsyncStorage.setItem('user', data.email);
-      console.log(res);
-      navigation.navigate('Bottom_Tab');
+      console.log(data.phone);
+      await AsyncStorage.setItem('user', data.phone);
+      if (data.account_type === 'dailer') {
+        navigation.replace('Bottom_Tab');
+      } else {
+        navigation.replace('CalL_Detection');
+      }
     }
   };
   const getAllTemplate = async () => {
@@ -54,11 +57,11 @@ const Login = ({navigation}) => {
 
         <View style={styles.inputContainer}>
           <TextInput
-            label={'EMAIL'}
-            value={email}
-            onChangeText={text => setEmail(text)}
+            label={'Phone Number'}
+            value={phone}
+            onChangeText={text => setPhone(text)}
             placeholderTextColor={white}
-            placeholder="Enter You'r Email"
+            placeholder="Enter You'r Phone number"
             keyboardType="email-address"
             underlineColor={white}
             outlineColor={white}

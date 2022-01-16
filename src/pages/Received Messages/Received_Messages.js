@@ -43,7 +43,7 @@ const Received_Messages = navigation => {
     // await Tts.setDefaultLanguage('ur-pk-x-urm-local');
 
     for (let i = 0; i < arr.length; i++) {
-      await timeout(3000);
+      await timeout(5000);
       Tts.speak(arr[i].message_text);
       console.log(arr[i].message_text);
     }

@@ -12,14 +12,40 @@ import momemt from 'moment';
 import {wp, hp} from '../../Global/Styles/Scalling';
 import {fontFamily, fontSize} from '../../Global/Styles/Fonts';
 import {theme, theme2, white} from '../../Global/Styles/Theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoginSVG from '../../Assets/Svgs/themesvg.svg';
 import {TextInput} from 'react-native-paper';
 import CustomiseButton from '../../Components/customizeButton/CustomizedButton';
+import {getData} from '../../Constants/API';
 const Signup = ({navigation}) => {
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [Password, setPassword] = useState('');
   const [showPassword, setshowPassword] = useState(true);
   const [showConfirmPassword, setshowConfirmPassword] = useState(true);
+
+  const CreateAccount = async () => {
+    // console.log('phone :' + phone + ' passsword :' + Password);
+    if (phone || Password) {
+      const formData = new FormData();
+      formData.append('phone', phone);
+      formData.append('password', Password);
+      const res = await getData('Signup', formData);
+      var data = res.data;
+
+      if (data === undefined) {
+        alert('sorry phone alrerady in used');
+      } else {
+        await AsyncStorage.setItem('user', data.phone);
+        if (data.account_type === 'dailer') {
+          navigation.replace('Bottom_Tab');
+        } else {
+          navigation.replace('CalL_Detection');
+        }
+      }
+      console.log(data);
+    }
+  };
+
   return (
     <View style={styles.mainView}>
       <ScrollView
@@ -31,14 +57,12 @@ const Signup = ({navigation}) => {
 
         <View style={styles.inputContainer}>
           <TextInput
-            label={'EMAIL'}
-            value={email}
-            onChangeText={text => {
-              setEmail(text), setvalidEmail(true);
-            }}
+            label={'phone'}
+            value={phone}
+            onChangeText={text => setPhone(text)}
             placeholderTextColor={white}
-            placeholder="Enter You'r Email"
-            keyboardType="email-address"
+            placeholder="Enter You'r phone"
+            keyboardType="phone-address"
             underlineColor={white}
             outlineColor={white}
             right={<TextInput.Icon color={white} name="email-outline" />}
@@ -75,7 +99,11 @@ const Signup = ({navigation}) => {
             style={styles.input}
           />
         </View>
-        <CustomiseButton title="Sign Up" customstyle={styles.buttonStyle} />
+        <CustomiseButton
+          onPress={() => CreateAccount()}
+          title="Sign Up"
+          customstyle={styles.buttonStyle}
+        />
         <View>
           <TouchableOpacity
             style={styles.navLink}
