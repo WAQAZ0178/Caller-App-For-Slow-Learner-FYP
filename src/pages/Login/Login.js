@@ -32,8 +32,10 @@ const Login = ({navigation}) => {
       console.log(data.phone);
       await AsyncStorage.setItem('user', data.phone);
       if (data.account_type === 'dailer') {
+        console.log('dailer');
         navigation.replace('Bottom_Tab');
       } else {
+        console.log('receiver');
         navigation.replace('CalL_Detection');
       }
     }
@@ -62,7 +64,7 @@ const Login = ({navigation}) => {
             onChangeText={text => setPhone(text)}
             placeholderTextColor={white}
             placeholder="Enter You'r Phone number"
-            keyboardType="email-address"
+            keyboardType="phone-pad"
             underlineColor={white}
             outlineColor={white}
             right={<TextInput.Icon color={white} name="email-outline" />}

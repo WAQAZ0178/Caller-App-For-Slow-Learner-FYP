@@ -7,14 +7,14 @@ import {
   ScrollView,
 } from 'react-native';
 import styles from './Signup-styles';
-import Octicons from 'react-native-vector-icons/Octicons';
+
 import momemt from 'moment';
 import {wp, hp} from '../../Global/Styles/Scalling';
 import {fontFamily, fontSize} from '../../Global/Styles/Fonts';
 import {theme, theme2, white} from '../../Global/Styles/Theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoginSVG from '../../Assets/Svgs/themesvg.svg';
-import {TextInput} from 'react-native-paper';
+import {TextInput, RadioButton} from 'react-native-paper';
 import CustomiseButton from '../../Components/customizeButton/CustomizedButton';
 import {getData} from '../../Constants/API';
 const Signup = ({navigation}) => {
@@ -22,6 +22,7 @@ const Signup = ({navigation}) => {
   const [Password, setPassword] = useState('');
   const [showPassword, setshowPassword] = useState(true);
   const [showConfirmPassword, setshowConfirmPassword] = useState(true);
+  var [account_type, setAccount_type] = useState('dailer');
 
   const CreateAccount = async () => {
     // console.log('phone :' + phone + ' passsword :' + Password);
@@ -29,7 +30,9 @@ const Signup = ({navigation}) => {
       const formData = new FormData();
       formData.append('phone', phone);
       formData.append('password', Password);
+      formData.append('account_type', account_type);
       const res = await getData('Signup', formData);
+
       var data = res.data;
 
       if (data === undefined) {
@@ -42,7 +45,7 @@ const Signup = ({navigation}) => {
           navigation.replace('CalL_Detection');
         }
       }
-      console.log(data);
+      console.log(res.data);
     }
   };
 
@@ -57,12 +60,12 @@ const Signup = ({navigation}) => {
 
         <View style={styles.inputContainer}>
           <TextInput
-            label={'phone'}
+            label={'Phone'}
             value={phone}
             onChangeText={text => setPhone(text)}
             placeholderTextColor={white}
             placeholder="Enter You'r phone"
-            keyboardType="phone-address"
+            keyboardType="phone-pad"
             underlineColor={white}
             outlineColor={white}
             right={<TextInput.Icon color={white} name="email-outline" />}
@@ -99,6 +102,30 @@ const Signup = ({navigation}) => {
             style={styles.input}
           />
         </View>
+        <View style={styles.radioButtonContainer}>
+          <Text style={styles.AccountYpeText}>Select Account Type</Text>
+          <View style={styles.button_text_container}>
+            <RadioButton
+              value="dailer"
+              status={account_type === 'dailer' ? 'checked' : 'unchecked'}
+              onPress={() => setAccount_type('dailer')}
+              uncheckedColor="white"
+              color={white}
+            />
+            <Text style={styles.radioButtonText}>Dailer</Text>
+          </View>
+          <View style={styles.button_text_container}>
+            <RadioButton
+              value="receiver"
+              status={account_type === 'receiver' ? 'checked' : 'unchecked'}
+              onPress={() => setAccount_type('receiver')}
+              uncheckedColor="white"
+              color={white}
+            />
+            <Text style={styles.radioButtonText}>Receiver</Text>
+          </View>
+        </View>
+
         <CustomiseButton
           onPress={() => CreateAccount()}
           title="Sign Up"

@@ -17,12 +17,12 @@ import {
 } from 'react-native';
 import Tts from 'react-native-tts';
 import CallDetectorManager from 'react-native-call-detection';
-import {GetTempaltes, postFormData} from '../../Constants/API';
+import {GetTempaltes, postFormData, updateFormData} from '../../Constants/API';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Sound from 'react-native-sound';
 Sound.setCategory('Playback');
 
-const App = () => {
+const App = ({navigation}) => {
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [Event, setEvent] = useState(false);
@@ -138,18 +138,23 @@ const App = () => {
     console.log('api data');
     var delay = 1000;
     const formdata = new FormData();
-    formdata.append('message_to', '03447568968');
+    formdata.append('message_to', '03365161196');
     var res = await postFormData('GetAllMessages', formdata);
     var arr = res.data;
-    console.log(arr);
+    // console.log(arr);
     // await Tts.setDefaultLanguage('ur-PK');
     await Tts.setDefaultLanguage('en-IE');
-    Tts.setDefaultVoice('ur-pk-x-cfn-network');
+    // Tts.setDefaultVoice('ur-pk-x-cfn-network');
     for (let i = 0; i < arr.length; i++) {
       await timeout(delay);
       Tts.speak(arr[i]?.message_text);
       console.log(arr[i]?.message_text);
       delay = 5000;
+      const obj = new FormData();
+      obj.append('Mid', arr[i].Mid);
+      obj.append('message_status', 'seen');
+      var update = await updateFormData('UpdateMessages', obj);
+      console.log(update);
     }
   };
 
@@ -194,7 +199,7 @@ const App = () => {
             {isStart ? 'Stop Listner' : 'Start Listener'}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           activeOpacity={0.7}
           onPress={callFriendTapped}
           style={styles.fabStyle}>
@@ -204,7 +209,7 @@ const App = () => {
             }}
             style={styles.fabImageStyle}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </SafeAreaView>
   );

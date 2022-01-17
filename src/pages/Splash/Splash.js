@@ -8,25 +8,32 @@ import {postFormData} from '../../Constants/API';
 const Splash = ({navigation}) => {
   useEffect(() => {
     (async () => {
-      const token = await AsyncStorage.getItem('user');
       setTimeout(() => {
-        const formdata = new FormData();
-        formdata.append('phone', token);
-        var res = await postFormData('AccountType', formdata);
-        if (res?.data?.account_type === 'dailer') {
-          navigation.navigate('Bottom_Tab');
-        } else {
-          navigation.navigate('Login');
-        }
+        getToken();
       }, 3000);
     })();
   }, []);
 
-  //   const getToken = async () => {
-  //     var user = await AsyncStorage.getItem('user');
-  //     console.log('token', user);
-  //     settoken(user);
-  //   };
+  const getToken = async () => {
+    var user = await AsyncStorage.getItem('user');
+    console.log(user);
+    if (user === null) {
+      console.log('null is ther');
+      navigation.replace('Login');
+    } else {
+      const formdata = new FormData();
+      formdata.append('phone', user);
+      var res = await postFormData('AccountType', formdata);
+      console.log(res.data);
+      if (res?.data?.account_type === 'dailer') {
+        console.log('dailer');
+        navigation.replace('Bottom_Tab');
+      } else {
+        console.log('receiver');
+        navigation.navigate('Call_Detection');
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>

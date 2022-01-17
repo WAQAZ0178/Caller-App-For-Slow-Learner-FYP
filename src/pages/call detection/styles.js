@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   hiddenButtob: {
-    borderWidth: 1,
-    borderColor: 'red',
+    // borderWidth: 1,
+    // borderColor: 'red',
     height: hp(30),
   },
   button: {

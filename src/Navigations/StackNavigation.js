@@ -13,6 +13,7 @@ import Receive from '../pages/Receive Call/Receive';
 import Incoming from '../pages/Incoming Call/Incoming';
 import BottomTab from './BottomTab';
 import Splash from '../pages/Splash/Splash';
+import Call_Detection from '../pages/call detection/call_Detection';
 const Stack = createStackNavigator();
 const StackNavigation = () => {
   return (
@@ -20,6 +21,16 @@ const StackNavigation = () => {
       screenOptions={{headerShown: false}}
       initialRouteName={'Splash'}
       mode="modal">
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="Call_Detection"
+        component={Call_Detection}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen
         options={{
           headerShown: false,

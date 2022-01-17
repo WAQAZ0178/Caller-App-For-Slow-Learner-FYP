@@ -43,14 +43,16 @@ const ContactList = ({navigation}) => {
     addContact();
   }, []);
 
-  const connectCall = async () => {
+  const connectCall = async number => {
+    console.log(number);
+    await AsyncStorage.setItem('dail_number', number);
     Linking.openURL(`tel:${item.phoneNumbers[0].number}`);
   };
   const renderMessages = item => {
     // console.log(item.phoneNumbers[0].number);
     return (
       <TouchableOpacity
-        onPress={() => connectCall()}
+        onPress={() => connectCall(item.phoneNumbers[0].number)}
         style={{...styles.contactContainer}}>
         <View style={styles.dpContainer}>
           <Image

@@ -3,29 +3,20 @@ import React, {useState} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   StatusBar,
   TouchableOpacity,
   TextInput,
   FlatList,
   Linking,
 } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Octicons from 'react-native-vector-icons/Octicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import styles from './Dialer_styles';
-
-import {wp, hp} from '../../Global/Styles/Scalling';
-import {fontFamily, fontSize} from '../../Global/Styles/Fonts';
-import {
-  black,
-  gray,
-  midGray,
-  theme,
-  theme2,
-  white,
-} from '../../Global/Styles/Theme';
+import {hp} from '../../Global/Styles/Scalling';
+import {theme, white} from '../../Global/Styles/Theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Dialer = ({navigation}) => {
+  const [number, setnumber] = useState('');
+
   const RemoveLastDigit = () => {
     if (number.length > 0) {
       var newStr = number.slice(0, -1);
@@ -46,7 +37,12 @@ const Dialer = ({navigation}) => {
     {number: 0},
     {number: '#'},
   ];
-  const [number, setnumber] = useState('');
+  const connectCall = async () => {
+    console.log(number);
+    await AsyncStorage.setItem('dail_number', number);
+    Linking.openURL(`tel:${number}`);
+  };
+
   const renderNumber = item => {
     return (
       <TouchableOpacity
@@ -102,7 +98,7 @@ const Dialer = ({navigation}) => {
         </View>
         <View style={styles.bottomButton}>
           <TouchableOpacity
-            onPress={() => Linking.openURL(`tel:${number}`)}
+            onPress={() => connectCall()}
             style={styles.callButton}>
             <Text style={{...styles.keypadNumberButtonText, color: white}}>
               Call

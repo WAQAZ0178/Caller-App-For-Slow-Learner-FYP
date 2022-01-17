@@ -33,9 +33,6 @@ const Home = ({navigation}) => {
   const [speechPitch, setSpeechPitch] = useState(1);
 
   useEffect(() => {
-    Tts.setDefaultLanguage('ur-pk-x-urm-local');
-    Tts.setDefaultRate(speechRate);
-    Tts.setDefaultPitch(speechPitch);
     getAllSQLLiteTemplate();
     checkDatabase();
     getToken();
@@ -102,14 +99,16 @@ const Home = ({navigation}) => {
     console.log('temp array', temp);
   };
   const storeTemplate = async txt => {
+    await Tts.setDefaultLanguage('en-IE');
+    Tts.setDefaultVoice('ur-pk-x-cfn-network');
     var user = await AsyncStorage.getItem('user');
-
+    var dailed_number = await AsyncStorage.getItem('dail_number');
     const formdata = new FormData();
     formdata.append('message_text', txt);
     formdata.append('message_from', user);
-    formdata.append('message_to', '03447568968');
+    formdata.append('message_to', dailed_number);
     formdata.append('message_status', 'unseen');
-    speak_Search_Text(txt);
+    // speak_Search_Text(txt);
     var response = await postFormData('SendMessage', formdata);
     console.log(response.data);
     db.transaction(function (txn) {
@@ -160,9 +159,9 @@ const Home = ({navigation}) => {
     {template_text: `I'm Fine sir `},
     {template_text: 'I will be there soon '},
     {template_text: 'no problem dear'},
-    {template_text: 'yes ofcourse its important meeting'},
+    {template_text: 'yes of course its important meeting'},
     {template_text: 'okay  i will wait  '},
-    {template_text: 'sorry i dont have time '},
+    {template_text: `sorry i don't have time`},
     {template_text: 'let me know when you get the message '},
   ];
   const speak_Search_Text = async text => {

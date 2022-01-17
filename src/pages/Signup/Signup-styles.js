@@ -27,17 +27,41 @@ const styles = StyleSheet.create({
     width: wp(90),
     // borderColor: white,
     // borderWidth: 1,
-    height: hp(23),
+    height: hp(22),
     marginTop: hp(-10),
     justifyContent: 'space-between',
 
     // justifyContent: 'center',
   },
   navLink: {
-    marginTop: hp(5),
+    marginTop: hp(2),
+    // marginBottom: hp(10),
   },
   buttonStyle: {
-    marginTop: hp(10),
+    marginTop: hp(4),
+  },
+  radioButtonContainer: {
+    // borderWidth: 1,
+    // borderColor: 'white',
+    width: wp(89.33),
+    paddingLeft: wp(5),
+    justifyContent: 'flex-start',
+  },
+  button_text_container: {
+    marginTop: hp(1),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  AccountYpeText: {
+    marginTop: hp(2),
+    color: white,
+    fontSize: 16,
+    fontFamily: fontFamily.UbuntuMedium,
+  },
+  radioButtonText: {
+    color: white,
+    fontSize: 16,
+    fontFamily: fontFamily.UbuntuRegular,
   },
 });
 export default styles;

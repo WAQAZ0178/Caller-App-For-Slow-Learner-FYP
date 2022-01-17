@@ -110,6 +110,27 @@ export const postFormData = async (relativeUrl, data) => {
     });
   return response;
 };
+export const updateFormData = async (relativeUrl, data) => {
+  console.log('data::::', data);
+  // console.log('token::::',token);
+  const url = getUrl(relativeUrl);
+  console.log('url :', url);
+  const config = {
+    method: 'PUT',
+    url: url,
+    headers: {
+      'Content-Type': 'multipart/form-data, application/json',
+    },
+    data: data,
+  };
+  const response = await axios(config)
+    .then(res => res)
+    .catch(error => {
+      console.log(response);
+      // return {status: 500};
+    });
+  return response;
+};
 
 export const sendMessageToServer = async (socket, msgInfo) => {
   socket.emit('chat message', msgInfo);
