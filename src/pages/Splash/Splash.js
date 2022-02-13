@@ -5,16 +5,25 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './Splash-styles';
 import {theme} from '../../Global/Styles/Theme';
 import {postFormData} from '../../Constants/API';
+import SokectIo from 'socket.io-client';
+import {useStateValue} from '../../store';
+import {actionType} from '../../store/ActionTypes';
+const io = SokectIo('http://192.168.10.9:3000');
 const Splash = ({navigation}) => {
+  const [state, dispatch] = useStateValue();
   useEffect(() => {
     (async () => {
+      dispatch({
+        type: actionType.SET_IO,
+        payload: io,
+      });
       setTimeout(() => {
         getToken();
       }, 3000);
     })();
   }, []);
-
   const getToken = async () => {
+    console.log('spash screen');
     var user = await AsyncStorage.getItem('user');
     console.log(user);
     if (user === null) {

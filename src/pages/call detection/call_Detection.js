@@ -20,10 +20,13 @@ import CallDetectorManager from 'react-native-call-detection';
 import {GetTempaltes, postFormData, updateFormData} from '../../Constants/API';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Sound from 'react-native-sound';
+import {useStateValue} from '../../store';
 Sound.setCategory('Playback');
 
 const App = ({navigation}) => {
   const appState = useRef(AppState.currentState);
+  const [state, dispatch] = useStateValue();
+  const {io} = state;
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [Event, setEvent] = useState(false);
   const arr = ['hello sir ', 'how are you', ' oh my god are you there sir '];
@@ -33,6 +36,7 @@ const App = ({navigation}) => {
   let [flatListItems, setFlatListItems] = useState([]);
 
   useEffect(() => {
+    startStopListener();
     const subscription = AppState.addEventListener('change', nextAppState => {
       if (
         appState.current.match(/inactive|background/) &&
@@ -56,100 +60,101 @@ const App = ({navigation}) => {
           getAllMessages;
         }, 10000);
     }
-  }, [Event]);
+  }, []);
 
-  const callFriendTapped = () => {
-    Linking.openURL('tel:03407503006').catch(err => {
-      console.log(err);
-    });
-  };
   function timeout(delay) {
     return new Promise(res => setTimeout(res, delay));
   }
   const startStopListener = () => {
-    if (isStart) {
-      console.log('Stop');
-      callDetector && callDetector.dispose();
-    } else {
-      console.log('Start');
-      callDetector = new CallDetectorManager(
-        async (event, number) => {
-          console.log('event -> ', event + (number ? ' - ' + number : ''));
-          var updatedCallStates = callStates;
-          updatedCallStates.push(event + (number ? ' - ' + number : ''));
-          setFlatListItems(updatedCallStates);
-          setCallStates(updatedCallStates);
+    // if (isStart) {
+    //   console.log('Stop');
+    //   callDetector && callDetector.dispose();
+    // } else {
+    console.log('Start');
+    callDetector = new CallDetectorManager(
+      async (event, number) => {
+        console.log('event -> ', event + (number ? ' - ' + number : ''));
+        var updatedCallStates = callStates;
+        updatedCallStates.push(event + (number ? ' - ' + number : ''));
+        setFlatListItems(updatedCallStates);
+        setCallStates(updatedCallStates);
 
-          // For iOS event will be either "Connected",
-          // "Disconnected","Dialing" and "Incoming"
+        // For iOS event will be either "Connected",
+        // "Disconnected","Dialing" and "Incoming"
 
-          // For Android event will be either "Offhook",
-          // "Disconnected", "Incoming" or "Missed"
-          // phoneNumber should store caller/called number
+        // For Android event will be either "Offhook",
+        // "Disconnected", "Incoming" or "Missed"
+        // phoneNumber should store caller/called number
 
-          if (event === 'Disconnected') {
-            setEvent(false);
-            Tts.stop();
-          } else if (event === 'Connected') {
-            console.log('  // Do something call got connected');
-            // Do something call got connected
-            // This clause will only be executed for iOS
-          } else if (event === 'Incoming') {
-            console.log('  // Do something call got incoming');
-          } else if (event === 'Dialing') {
-            // Do something call got dialing
-            // This clause will only be executed for iOS
-          } else if (event === 'Offhook') {
-            setEvent(true);
-            await getAllMessages();
-            // console.log('  // Do something call got connected');
-            // for (let i = 0; i < arr.length; i++) {
-            //   await Tts.speak(arr[i]);
-            //   console.log(arr[i]);
-            // }
-            //Device call state: Off-hook.
-            // At least one call exists that is dialing,
-            // active, or on hold,
-            // and no calls are ringing or waiting.
-            // This clause will only be executed for Android
-          } else if (event === 'Missed') {
-            // Do something call got missed
-            // This clause will only be executed for Android
-          }
-        },
-        true, // To detect incoming calls [ANDROID]
-        () => {
-          // If your permission got denied [ANDROID]
-          // Only if you want to read incoming number
-          // Default: console.error
-          console.log('Permission Denied by User');
-        },
-        {
-          title: 'Phone State Permission',
-          message:
-            'This app needs access to your phone state in order to react and/or to adapt to incoming calls.',
-        },
-      );
-    }
-    setIsStart(!isStart);
+        if (event === 'Disconnected') {
+          setEvent(false);
+          Tts.stop();
+        } else if (event === 'Connected') {
+          console.log('  // Do something call got connected');
+          // Do something call got connected
+          // This clause will only be executed for iOS
+        } else if (event === 'Incoming') {
+          console.log('  // Do something call got incoming');
+        } else if (event === 'Dialing') {
+          // Do something call got dialing
+          // This clause will only be executed for iOS
+        } else if (event === 'Offhook') {
+          setEvent(true);
+          await getAllMessages();
+          // console.log('  // Do something call got connected');
+          // for (let i = 0; i < arr.length; i++) {
+          //   await Tts.speak(arr[i]);
+          //   console.log(arr[i]);
+          // }
+          //Device call state: Off-hook.
+          // At least one call exists that is dialing,
+          // active, or on hold,
+          // and no calls are ringing or waiting.
+          // This clause will only be executed for Android
+        } else if (event === 'Missed') {
+          // Do something call got missed
+          // This clause will only be executed for Android
+        }
+      },
+      true, // To detect incoming calls [ANDROID]
+      () => {
+        // If your permission got denied [ANDROID]
+        // Only if you want to read incoming number
+        // Default: console.error
+        console.log('Permission Denied by User');
+      },
+      {
+        title: 'Phone State Permission',
+        message:
+          'This app needs access to your phone state in order to react and/or to adapt to incoming calls.',
+      },
+    );
+    // }
+    // setIsStart(!isStart);
   };
-
+  React.useEffect(() => {
+    io.on('getMessages', async () => {
+      // alert('sdjfdkj');
+      getAllMessages();
+    });
+  }, []);
   const getAllMessages = async () => {
     console.log('api data');
-    var delay = 1000;
+    // var delay = 1000;
     const formdata = new FormData();
-    formdata.append('message_to', '03365161196');
+    formdata.append('message_to', '03215498062');
     var res = await postFormData('GetAllMessages', formdata);
-    var arr = res.data;
+    console.log(res.data);
+    var arr = res?.data;
     // console.log(arr);
     // await Tts.setDefaultLanguage('ur-PK');
     await Tts.setDefaultLanguage('en-IE');
     // Tts.setDefaultVoice('ur-pk-x-cfn-network');
     for (let i = 0; i < arr.length; i++) {
-      await timeout(delay);
+      // await timeout(delay);
       Tts.speak(arr[i]?.message_text);
       console.log(arr[i]?.message_text);
-      delay = 5000;
+      // delay = 5000;
       const obj = new FormData();
       obj.append('Mid', arr[i].Mid);
       obj.append('message_status', 'seen');
@@ -173,16 +178,16 @@ const App = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
-        <View style={styles.header}>
+        {/* <View style={styles.header}>
           <Text style={styles.headerTextLarge}>
             Example to detect call states
           </Text>
           <Text style={styles.headerText}>www.aboutreact.com</Text>
-        </View>
-        <TouchableOpacity
+        </View> */}
+        {/* <TouchableOpacity
           activeOpacity={1}
           onPress={() => getAllMessages()}
-          style={styles.hiddenButtob}></TouchableOpacity>
+          style={styles.hiddenButtob}></TouchableOpacity> */}
         <FlatList
           style={{flex: 1}}
           data={flatListItems}

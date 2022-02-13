@@ -20,10 +20,13 @@ import {openDatabase} from 'react-native-sqlite-storage';
 var db = openDatabase({name: 'My_Template.db'});
 import {useIsFocused} from '@react-navigation/native';
 import {postFormData} from '../../Constants/API';
+import {useStateValue} from '../../store';
 
 const Home = ({navigation}) => {
   const isFocused = useIsFocused();
-
+  const [state, dispatch] = useStateValue();
+  const {io} = state;
+  // console.log('io::::', io);
   const [tabBarButton, settabBarButton] = useState('All');
   const [input, setinput] = useState('');
   const [token, settoken] = useState('');
@@ -37,11 +40,6 @@ const Home = ({navigation}) => {
     checkDatabase();
     getToken();
   }, [isFocused]);
-
-  // useEffect(() => {
-  //   getAllSQLLiteTemplate();
-  // }, [flag]);
-
   const updateTemplate = item => {
     console.log(item);
     var id = item.tid;
@@ -96,7 +94,7 @@ const Home = ({navigation}) => {
         setsqlLiteTemplate(arr);
       });
     });
-    console.log('temp array', temp);
+    // console.log('temp array', temp);
   };
   const storeTemplate = async txt => {
     await Tts.setDefaultLanguage('en-IE');
@@ -110,7 +108,8 @@ const Home = ({navigation}) => {
     formdata.append('message_status', 'unseen');
     // speak_Search_Text(txt);
     var response = await postFormData('SendMessage', formdata);
-    console.log(response.data);
+    io.emit('receive', {id: user});
+    // console.log(response.data);
     db.transaction(function (txn) {
       txn.executeSql(
         'SELECT * FROM user_template  where template_text=?',
@@ -125,7 +124,7 @@ const Home = ({navigation}) => {
               'UPDATE user_template set template_frequency=? where tid=?',
               [frequency, id],
               (tx, results) => {
-                console.log('Results', results.rowsAffected);
+                // console.log('Results', results.rowsAffected);
               },
             );
           } else {

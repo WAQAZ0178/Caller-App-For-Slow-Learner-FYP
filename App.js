@@ -16,6 +16,8 @@ import Home from './src/pages/Home/Home';
 import Incoming from './src/pages/Incoming Call/Incoming';
 import Login from './src/pages/Login/Login';
 import Logs from './src/pages/Logs/Logs';
+import SokectIo from 'socket.io-client';
+const io = SokectIo('http://192.168.100.9:3000');
 import My_Templates from './src/pages/my Templates/My_Templates';
 import Receive from './src/pages/Receive Call/Receive';
 import Signup from './src/pages/Signup/Signup';
@@ -26,10 +28,13 @@ import Splash from './src/pages/Splash/Splash';
 import Account_Type from './src/pages/Account Type/Account_Type';
 import Received_Messages from './src/pages/Received Messages/Received_Messages';
 import Call_Detect from './src/pages/call detection/call_Detection';
+import {StateProvider} from './src/store';
 
 const App = () => {
   const appState = useRef(AppState.currentState);
+  const SocketContext = React.createContext();
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
       if (
@@ -48,13 +53,16 @@ const App = () => {
       subscription.remove();
     };
   }, []);
+
   return (
     // <View style={styles.container}>
     //   <Call_Detect />
     // </View>
-    <NavigationContainer>
-      <StackNavigation />
-    </NavigationContainer>
+    <StateProvider>
+      <NavigationContainer>
+        <StackNavigation />
+      </NavigationContainer>
+    </StateProvider>
   );
 };
 

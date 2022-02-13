@@ -46,7 +46,7 @@ const ContactList = ({navigation}) => {
   const connectCall = async number => {
     console.log(number);
     await AsyncStorage.setItem('dail_number', number);
-    Linking.openURL(`tel:${item.phoneNumbers[0].number}`);
+    Linking.openURL(`tel:${number}`);
   };
   const renderMessages = item => {
     // console.log(item.phoneNumbers[0].number);

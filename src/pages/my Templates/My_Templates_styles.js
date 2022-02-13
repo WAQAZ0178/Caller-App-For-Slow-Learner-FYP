@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   syncButton: {
     height: hp(6),
     backgroundColor: white,
-    width: wp(95),
+    width: wp(90),
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
@@ -81,8 +81,20 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: fontFamily.UbuntuMedium,
     color: white,
-    marginTop: hp(3),
     alignSelf: 'center',
+  },
+  headerContainer: {
+    marginTop: hp(3),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // borderWidth: 1,
+    // borderColor: 'red',
+    paddingBottom: hp(1),
+  },
+  settingButton: {
+    position: 'absolute',
+    right: wp(5),
   },
 });
 export default styles;

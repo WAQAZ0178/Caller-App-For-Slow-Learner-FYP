@@ -1,18 +1,11 @@
 //import liraries
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  StatusBar,
-  TextInput,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, StatusBar, FlatList, TouchableOpacity} from 'react-native';
 import {black, theme, white} from '../../Global/Styles/Theme';
 import styles from './My_Templates_styles';
 import Data from './templatesdata';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {openDatabase} from 'react-native-sqlite-storage';
 var db = openDatabase({name: 'My_Template.db'});
 import {postFormData, GetTempaltes} from '../../Constants/API';
@@ -122,8 +115,8 @@ const My_Templates = ({navigation}) => {
         for (let i = 0; i < results.rows.length; ++i) {
           temp.push(results.rows.item(i));
         }
-        console.log('all data from databse ', temp);
-        console.log('before', temp);
+        // console.log('all data from databse ', temp);
+        // console.log('before', temp);
         var arr = temp.sort((a, b) => {
           // console.log(a.template_frequency + '' + b.template_frequency);
           return b.template_frequency - a.template_frequency;
@@ -132,7 +125,7 @@ const My_Templates = ({navigation}) => {
         setsqlLiteTemplate(arr);
       });
     });
-    console.log('temp array', temp);
+    // console.log('temp array', temp);
   };
 
   const renderMessages = item => {
@@ -152,7 +145,15 @@ const My_Templates = ({navigation}) => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={theme} />
-      <Text style={styles.contactListHeadingText}>My Templates</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.contactListHeadingText}>My Templates</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Setting')}
+          style={styles.settingButton}>
+          <AntDesign name="setting" color={white} size={25} />
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.FlatListContainer}>
         {sqlLiteTemplate && (
           <FlatList
@@ -163,7 +164,7 @@ const My_Templates = ({navigation}) => {
           />
         )}
       </View>
-      <View style={styles.syncContainer}>
+      {/* <View style={styles.syncContainer}>
         <TouchableOpacity
           onPress={() => getDataFromApi()}
           style={styles.syncButton}>
@@ -176,7 +177,7 @@ const My_Templates = ({navigation}) => {
           style={styles.syncButton}>
           <Text style={styles.SyncText}>Create Backup</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 };
