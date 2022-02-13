@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     // borderColor: white,
     // borderWidth: 1,
     height: hp(22),
-    marginTop: hp(-10),
+    marginTop: hp(2),
     justifyContent: 'space-between',
 
     // justifyContent: 'center',
@@ -62,6 +62,11 @@ const styles = StyleSheet.create({
     color: white,
     fontSize: 16,
     fontFamily: fontFamily.UbuntuRegular,
+  },
+  radioButtonParentContainer: {
+    marginTop: hp(2),
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 export default styles;

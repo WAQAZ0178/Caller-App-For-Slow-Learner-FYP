@@ -14,6 +14,7 @@ import {fontFamily, fontSize} from '../../Global/Styles/Fonts';
 import {theme, theme2, white} from '../../Global/Styles/Theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoginSVG from '../../Assets/Svgs/themesvg.svg';
+import SVG from '../../Assets/Svgs/Calling.svg';
 import {TextInput, RadioButton} from 'react-native-paper';
 import CustomiseButton from '../../Components/customizeButton/CustomizedButton';
 import {getData} from '../../Constants/API';
@@ -51,11 +52,12 @@ const Signup = ({navigation}) => {
 
   return (
     <View style={styles.mainView}>
+      <StatusBar barStyle="light-content" backgroundColor={theme} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.container}>
         <View>
-          <LoginSVG />
+          <SVG width={375} height={280} />
         </View>
 
         <View style={styles.inputContainer}>
@@ -104,25 +106,27 @@ const Signup = ({navigation}) => {
         </View>
         <View style={styles.radioButtonContainer}>
           <Text style={styles.AccountYpeText}>Select Account Type</Text>
-          <View style={styles.button_text_container}>
-            <RadioButton
-              value="dailer"
-              status={account_type === 'dailer' ? 'checked' : 'unchecked'}
-              onPress={() => setAccount_type('dailer')}
-              uncheckedColor="white"
-              color={white}
-            />
-            <Text style={styles.radioButtonText}>Dailer</Text>
-          </View>
-          <View style={styles.button_text_container}>
-            <RadioButton
-              value="receiver"
-              status={account_type === 'receiver' ? 'checked' : 'unchecked'}
-              onPress={() => setAccount_type('receiver')}
-              uncheckedColor="white"
-              color={white}
-            />
-            <Text style={styles.radioButtonText}>Receiver</Text>
+          <View style={styles.radioButtonParentContainer}>
+            <View style={styles.button_text_container}>
+              <RadioButton
+                value="dailer"
+                status={account_type === 'dailer' ? 'checked' : 'unchecked'}
+                onPress={() => setAccount_type('dailer')}
+                uncheckedColor="white"
+                color={white}
+              />
+              <Text style={styles.radioButtonText}>Dailer</Text>
+            </View>
+            <View style={{...styles.button_text_container, marginLeft: wp(8)}}>
+              <RadioButton
+                value="receiver"
+                status={account_type === 'receiver' ? 'checked' : 'unchecked'}
+                onPress={() => setAccount_type('receiver')}
+                uncheckedColor="white"
+                color={white}
+              />
+              <Text style={styles.radioButtonText}>Receiver</Text>
+            </View>
           </View>
         </View>
 

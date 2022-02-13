@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     // borderColor: white,
     // borderWidth: 1,
     height: hp(23),
-    marginTop: hp(-10),
+    marginTop: hp(5),
     justifyContent: 'space-between',
 
     // justifyContent: 'center',

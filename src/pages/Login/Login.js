@@ -10,6 +10,7 @@ import styles from './Login-styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {theme, theme2, white} from '../../Global/Styles/Theme';
 import LoginSVG from '../../Assets/Svgs/themesvg.svg';
+import SVG from '../../Assets/Svgs/Calling.svg';
 import {TextInput} from 'react-native-paper';
 import CustomiseButton from '../../Components/customizeButton/CustomizedButton';
 import URLS from '../../Constants/Constants';
@@ -50,11 +51,12 @@ const Login = ({navigation}) => {
 
   return (
     <View style={styles.mainView}>
+      <StatusBar barStyle="light-content" backgroundColor={theme} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.container}>
         <View>
-          <LoginSVG />
+          <SVG width={375} height={280} />
         </View>
 
         <View style={styles.inputContainer}>
